@@ -1,390 +1,2228 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#080b0f">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <title>Placar de Tênis por Voz</title>
-  <style>
-    :root{
-      --bg:#080b0f; --card:#11161c; --line:#29313a; --text:#f4f7fa;
-      --muted:#89939e; --home:#9dff22; --away:#3d8dff; --danger:#ff5c67;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-    body{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);display:flex;justify-content:center}
-    button{font:inherit}
-    .app{width:min(760px,100%);padding:14px 0 28px}
-    .top{
-      background:linear-gradient(145deg,#12181e,#0e1217);border:1px solid #303841;
-      border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 8px 30px #0008
-    }
-    .toprow{display:flex;align-items:center;gap:14px}
-    .mic-icon{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:2px solid #31521b;background:#172113;font-size:29px}
-    .mic-icon.listening{box-shadow:0 0 0 5px #9dff2215,0 0 25px #9dff2240}
-    .last-label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--home);font-weight:800}
-    #lastCommand{font-size:21px;font-weight:700;margin-top:4px;min-height:29px;word-break:break-word}
-    .status{margin-left:auto;white-space:nowrap;color:var(--muted);font-size:13px;font-weight:700}
-    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#555;margin-right:6px}
-    .dot.on{background:var(--home);box-shadow:0 0 12px var(--home)}
-    .dot.err{background:var(--danger)}
-    .score-card{
-      background:linear-gradient(145deg,#12171c,#0e1216);border:1px solid #29313a;
-      border-radius:22px;padding:20px 16px;margin:12px 0;position:relative;overflow:hidden
-    }
-    .score-card.home{border-color:#294018}.score-card.away{border-color:#1e385f}
-    .player{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
-    .name{font-size:clamp(22px,6vw,38px);font-weight:900;letter-spacing:.04em}
-    .home .name{color:var(--home)}.away .name{color:var(--away)}
-    .serve{font-size:13px;font-weight:800;color:var(--muted);margin-top:7px;min-height:20px}
-    .serve .ball{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#e8df25;color:#111;font-size:11px;margin-right:6px}
-    .scoreline{display:grid;grid-template-columns:minmax(0,1fr) 1px 78px;align-items:center;gap:16px;margin-top:10px}
-    .points{font-size:clamp(76px,23vw,145px);line-height:.82;font-weight:950;letter-spacing:-.07em;text-align:center}
-    .home .points{color:var(--home)}.away .points{color:var(--away)}
-    .divider{height:92px;background:#4a535c}
-    .games-label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#8c959e;text-align:center;font-weight:800}
-    .games{font-size:clamp(54px,15vw,88px);line-height:1;font-weight:900;text-align:center}
-    .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
-    button{
-      min-height:52px;border:1px solid #343e47;border-radius:15px;background:#171d23;color:#f4f7fa;
-      font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent
-    }
-    button:active{transform:scale(.98)}
-    .primary{background:#1c2d12;border-color:#416c1c;color:var(--home)}
-    .secondary{color:#aeb7bf}
-    .help{margin-top:12px;border:1px solid #29313a;border-radius:18px;padding:15px;background:#0f1419;color:#b6bec6;font-size:14px;line-height:1.55}
-    .help strong{color:#fff}.help code{color:#dce5ec}
-    .footer{display:flex;justify-content:center;gap:12px;align-items:center;margin-top:14px;color:#727d87;font-size:12px;text-align:center}
-    @media (max-width:430px){
-      .score-card{padding:17px 13px}.scoreline{grid-template-columns:minmax(0,1fr) 1px 67px;gap:9px}
-      .top{padding:13px}.mic-icon{width:50px;height:50px;font-size:25px}.status{font-size:11px}
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Placar de Tênis por Voz</title>
+
+    <style>
+        :root {
+            --green: #10b981;
+            --green-dark: #059669;
+            --red: #ef4444;
+            --blue: #2563eb;
+            --bg: #f3f4f6;
+            --card: #ffffff;
+            --text: #111827;
+            --muted: #6b7280;
+            --border: #e5e7eb;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 16px;
+            background: var(--bg);
+            color: var(--text);
+            font-family:
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                Roboto,
+                Arial,
+                sans-serif;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 700px;
+            margin: auto;
+        }
+
+        .card {
+            background: var(--card);
+            border-radius: 18px;
+            padding: 22px;
+            margin-bottom: 16px;
+            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+        }
+
+        h1 {
+            text-align: center;
+            margin: 0 0 5px;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--muted);
+            margin-bottom: 22px;
+        }
+
+        .setup-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: var(--green);
+        }
+
+        .serve-box {
+            margin-top: 15px;
+        }
+
+        .serve-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            border: 0;
+            border-radius: 10px;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .serve-button {
+            background: #f3f4f6;
+            border: 2px solid var(--border);
+        }
+
+        .serve-button.selected {
+            background: #ecfdf5;
+            border-color: var(--green);
+            color: #047857;
+        }
+
+        .start-button {
+            width: 100%;
+            margin-top: 18px;
+            background: var(--green);
+            color: white;
+        }
+
+        .start-button:hover {
+            background: var(--green-dark);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* STATUS DO MICROFONE */
+
+        .listening {
+            text-align: center;
+            padding: 15px;
+            border-radius: 12px;
+            background: #fee2e2;
+            color: #991b1b;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .listening.active {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: currentColor;
+            border-radius: 50%;
+            margin-right: 7px;
+            animation: pulse 1.2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                opacity: .3;
+                transform: scale(.8);
+            }
+
+            50% {
+                opacity: 1;
+                transform: scale(1.15);
+            }
+
+            100% {
+                opacity: .3;
+                transform: scale(.8);
+            }
+        }
+
+        /* SETS */
+
+        .sets-table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 420px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            border-bottom: 1px solid var(--border);
+            text-align: center;
+        }
+
+        th {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .name-cell {
+            text-align: left;
+            font-weight: 800;
+        }
+
+        .set-number {
+            font-size: 20px;
+            font-weight: 800;
+        }
+
+        /* PLACAR */
+
+        .set-info {
+            text-align: center;
+            color: var(--muted);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .score {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .player-score {
+            text-align: center;
+            padding: 20px 8px;
+            border: 2px solid var(--border);
+            background: #fafafa;
+            border-radius: 15px;
+        }
+
+        .player-score.advantage {
+            border-color: var(--green);
+            background: #ecfdf5;
+        }
+
+        .player-name {
+            font-weight: 800;
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .point-score {
+            font-size: 50px;
+            font-weight: 900;
+            line-height: 1;
+        }
+
+        .versus {
+            font-weight: 800;
+            color: var(--muted);
+        }
+
+        /* STATUS */
+
+        .game-status {
+            margin-top: 18px;
+            padding: 14px;
+            text-align: center;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #1e40af;
+            font-weight: 800;
+        }
+
+        /* VOZ */
+
+        .voice-card {
+            text-align: center;
+        }
+
+        .heard-label {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .heard {
+            min-height: 30px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .action {
+            margin-top: 10px;
+            color: var(--green-dark);
+            font-weight: 700;
+        }
+
+        /* HISTÓRICO */
+
+        .history {
+            max-height: 250px;
+            overflow-y: auto;
+        }
+
+        .history-item {
+            padding: 9px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+        }
+
+        .warning {
+            background: #fff7ed;
+            color: #9a3412;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-top: 12px;
+        }
+
+        .new-match {
+            width: 100%;
+            background: white;
+            color: var(--text);
+            border: 2px solid var(--border);
+        }
+
+        @media (max-width: 550px) {
+            .setup-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .point-score {
+                font-size: 42px;
+            }
+
+            .card {
+                padding: 17px;
+            }
+        }
+    </style>
 </head>
+
 <body>
-<main class="app">
-  <section class="top">
-    <div class="toprow">
-      <div id="micIcon" class="mic-icon">🎙️</div>
-      <div style="min-width:0">
-        <div class="last-label">Último comando entendido</div>
-        <div id="lastCommand">Aguardando comando...</div>
-      </div>
-      <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">PARADO</span></div>
-    </div>
-  </section>
 
-  <section class="score-card home">
-    <div class="player">
-      <div>
-        <div class="name">CASA</div>
-        <div id="homeServe" class="serve"></div>
-      </div>
-    </div>
-    <div class="scoreline">
-      <div id="homePoints" class="points">0</div>
-      <div class="divider"></div>
-      <div><div class="games-label">Games</div><div id="homeGames" class="games">0</div></div>
-    </div>
-  </section>
+<div class="container">
 
-  <section class="score-card away">
-    <div class="player">
-      <div>
-        <div class="name">ADVERSÁRIO</div>
-        <div id="awayServe" class="serve"></div>
-      </div>
+    <!-- ==============================
+         CONFIGURAÇÃO
+    =============================== -->
+
+    <div id="setup" class="card">
+
+        <h1>🎾 Placar por Voz</h1>
+
+        <div class="subtitle">
+            Configure a partida antes de começar
+        </div>
+
+        <div class="setup-grid">
+
+            <div>
+                <label for="nomeCasa">CASA</label>
+
+                <input
+                    id="nomeCasa"
+                    type="text"
+                    placeholder="Ex.: João"
+                    value="Casa"
+                >
+            </div>
+
+            <div>
+                <label for="nomeFora">FORA</label>
+
+                <input
+                    id="nomeFora"
+                    type="text"
+                    placeholder="Ex.: Pedro"
+                    value="Fora"
+                >
+            </div>
+
+        </div>
+
+        <div class="serve-box">
+
+            <label>QUEM COMEÇA SACANDO?</label>
+
+            <div class="serve-buttons">
+
+                <button
+                    id="serveCasa"
+                    class="serve-button selected"
+                    onclick="selecionarSaque(1)"
+                >
+                    🏠 Casa
+                </button>
+
+                <button
+                    id="serveFora"
+                    class="serve-button"
+                    onclick="selecionarSaque(2)"
+                >
+                    ✈️ Fora
+                </button>
+
+            </div>
+
+        </div>
+
+        <button
+            class="start-button"
+            onclick="iniciarPartida()"
+        >
+            🎙️ INICIAR PARTIDA
+        </button>
+
+        <div class="warning">
+            Depois de iniciar, o sistema tentará manter o reconhecimento
+            de voz ativo automaticamente. Mantenha esta página aberta e,
+            de preferência, a tela ligada.
+        </div>
+
     </div>
-    <div class="scoreline">
-      <div id="awayPoints" class="points">0</div>
-      <div class="divider"></div>
-      <div><div class="games-label">Games</div><div id="awayGames" class="games">0</div></div>
+
+
+    <!-- ==============================
+         PARTIDA
+    =============================== -->
+
+    <div id="match" class="hidden">
+
+        <div id="microphoneStatus" class="listening">
+            🔴 Microfone parado
+        </div>
+
+
+        <!-- SETS -->
+
+        <div class="card">
+
+            <div class="sets-table-wrapper">
+
+                <table>
+
+                    <thead>
+                        <tr>
+                            <th>Jogador</th>
+                            <th>1º Set</th>
+                            <th>2º Set</th>
+                            <th>3º Set</th>
+                            <th>Sets</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        <tr>
+                            <td id="nomeTabelaCasa" class="name-cell">
+                                Casa
+                            </td>
+
+                            <td id="set1Casa" class="set-number">-</td>
+                            <td id="set2Casa" class="set-number">-</td>
+                            <td id="set3Casa" class="set-number">-</td>
+
+                            <td id="setsCasa" class="set-number">
+                                0
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td id="nomeTabelaFora" class="name-cell">
+                                Fora
+                            </td>
+
+                            <td id="set1Fora" class="set-number">-</td>
+                            <td id="set2Fora" class="set-number">-</td>
+                            <td id="set3Fora" class="set-number">-</td>
+
+                            <td id="setsFora" class="set-number">
+                                0
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+
+        <!-- GAME ATUAL -->
+
+        <div class="card">
+
+            <div id="setInfo" class="set-info">
+                1º SET • 0 × 0 GAMES
+            </div>
+
+            <div class="score">
+
+                <div id="cardCasa" class="player-score">
+
+                    <div id="nomeCasaPlacar" class="player-name">
+                        Casa
+                    </div>
+
+                    <div id="pontosCasa" class="point-score">
+                        0
+                    </div>
+
+                </div>
+
+                <div class="versus">×</div>
+
+                <div id="cardFora" class="player-score">
+
+                    <div id="nomeForaPlacar" class="player-name">
+                        Fora
+                    </div>
+
+                    <div id="pontosFora" class="point-score">
+                        0
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div id="gameStatus" class="game-status">
+                Partida em andamento
+            </div>
+
+        </div>
+
+
+        <!-- RECONHECIMENTO -->
+
+        <div class="card voice-card">
+
+            <div class="heard-label">
+                ÚLTIMO COMANDO ENTENDIDO
+            </div>
+
+            <div id="ultimoComando" class="heard">
+                Aguardando você falar...
+            </div>
+
+            <div id="ultimaAcao" class="action">
+                —
+            </div>
+
+        </div>
+
+
+        <!-- HISTÓRICO -->
+
+        <div class="card">
+
+            <h3>📋 Histórico</h3>
+
+            <div id="historico" class="history">
+                Nenhum evento ainda.
+            </div>
+
+        </div>
+
+
+        <div class="card">
+
+            <button
+                class="new-match"
+                onclick="novaPartida()"
+            >
+                🔄 Nova partida
+            </button>
+
+        </div>
+
     </div>
-  </section>
 
-  <div class="controls">
-    <button id="startBtn" class="primary">🎙️ Iniciar voz</button>
-    <button id="resetBtn" class="secondary">↺ Novo jogo</button>
-  </div>
+</div>
 
-  <section class="help">
-    <strong>Comandos:</strong><br>
-    Início: <code>“saque casa”</code>, <code>“eu saco”</code>, <code>“saque adversário”</code>, <code>“ele saca”</code>.<br>
-    Placar: <code>“15 a 30”</code>, <code>“30 a 30”</code>, <code>“40 a 30”</code>,
-    <code>“vantagem casa”</code>, <code>“vantagem adversário”</code>.<br>
-    Game encerrado: depois de um placar válido, diga <code>“zero a zero”</code>.
-  </section>
-
-  <div class="footer">
-    <span>Microfone ativo durante a sessão</span><span>•</span><span>Reconhecimento contínuo</span>
-  </div>
-</main>
 
 <script>
-(() => {
-  "use strict";
 
-  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-  const $ = id => document.getElementById(id);
+    /*
+    ==========================================================
+    CONFIGURAÇÃO DO RECONHECIMENTO DE VOZ
+    ==========================================================
+    */
 
-  let state = {
-    homePoints: "0",
-    awayPoints: "0",
-    homeGames: 0,
-    awayGames: 0,
-    server: null,
-    previousLeader: null,
-    running: false,
-    shouldRestart: false,
-    recognition: null,
-    restarting: false
-  };
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
 
-  function render() {
-    $("homePoints").textContent = state.homePoints;
-    $("awayPoints").textContent = state.awayPoints;
-    $("homeGames").textContent = state.homeGames;
-    $("awayGames").textContent = state.awayGames;
+    let recognition = null;
+    let reconhecendo = false;
+    let partidaIniciada = false;
 
-    $("homeServe").innerHTML = state.server === "home"
-      ? '<span class="ball">●</span>SACANDO' : "";
-    $("awayServe").innerHTML = state.server === "away"
-      ? '<span class="ball">●</span>SACANDO' : "";
-  }
+    /*
+    Qual jogador começa sacando.
+    */
 
-  function setStatus(text, on=false, error=false) {
-    $("statusText").textContent = text;
-    $("statusDot").className = "dot" + (on ? " on" : "") + (error ? " err" : "");
-    $("micIcon").classList.toggle("listening", on);
-  }
+    let saqueInicial = 1;
 
-  function normalize(s) {
-    return s.toLowerCase()
-      .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
-      .replace(/[.,!?;:]/g, " ")
-      .replace(/\\s+/g, " ").trim();
-  }
 
-  function parseNumberWord(s) {
-    const map = {
-      "zero":"0","um":"1","uma":"1","dois":"2","duas":"2","tres":"3","três":"3",
-      "quatro":"4","cinco":"5","seis":"6","sete":"7","oito":"8","nove":"9",
-      "dez":"10","quinze":"15","trinta":"30","quarenta":"40"
-    };
-    return map[s] ?? s;
-  }
+    /*
+    ==========================================================
+    ESTADO DA PARTIDA
+    ==========================================================
+    */
 
-  function extractScore(text) {
-    const t = normalize(text)
-      .replace(/\\b(para|por|de|ponto|pontos)\\b/g, " ")
-      .replace(/\\s+/g, " ").trim();
+    let estado = {
+        casa: "Casa",
+        fora: "Fora",
 
-    const adv = t.includes("vantagem");
-    if (adv) {
-      if (t.includes("casa") || t.includes("eu") || t.includes("meu")) return {home:"AD", away:""};
-      if (t.includes("adversario") || t.includes("ele")) return {home:"", away:"AD"};
-    }
+        pontos: {
+            casa: 0,
+            fora: 0
+        },
 
-    if (t === "zero a zero" || t === "0 a 0" || t === "zero zero" || t === "0 0") {
-      return {home:"0", away:"0", zeroZero:true};
-    }
+        vantagem: null,
 
-    // Aceita "15 a 30", "quinze a trinta", "40 para 30", etc.
-    const m = t.match(/(?:placar\\s+)?([a-z0-9]+)\\s+(?:a|para|x|por)\\s+([a-z0-9]+)/);
-    if (!m) return null;
+        games: {
+            casa: 0,
+            fora: 0
+        },
 
-    const h = parseNumberWord(m[1]);
-    const a = parseNumberWord(m[2]);
-    const valid = ["0","15","30","40"];
-    if (valid.includes(h) && valid.includes(a)) return {home:h, away:a};
-    return null;
-  }
+        sets: {
+            casa: 0,
+            fora: 0
+        },
 
-  function setScore(home, away) {
-    state.homePoints = home;
-    state.awayPoints = away;
+        placarSets: [],
 
-    if (home === "AD") state.previousLeader = "home";
-    else if (away === "AD") state.previousLeader = "away";
-    else if (home !== away) state.previousLeader = Number(home) > Number(away) ? "home" : "away";
-    else state.previousLeader = null;
+        setAtual: 1,
 
-    render();
-  }
+        sacando: 1,
 
-  function finishGame() {
-    if (state.previousLeader === "home") {
-      state.homeGames++;
-      state.server = state.server === "home" ? "away" : "home";
-    } else if (state.previousLeader === "away") {
-      state.awayGames++;
-      state.server = state.server === "home" ? "away" : "home";
-    } else {
-      $("lastCommand").textContent = "“zero a zero” — sem líder claro para fechar o game";
-      return;
-    }
-
-    state.homePoints = "0";
-    state.awayPoints = "0";
-    state.previousLeader = null;
-    render();
-  }
-
-  function processCommand(raw) {
-    const t = normalize(raw);
-    $("lastCommand").textContent = "“" + raw.trim() + "”";
-
-    // Comandos de saque precisam vir antes do parser de placar.
-    if (/(saque|saca|sacando).*(casa|eu|meu)/.test(t) ||
-        /(eu|eu que)\\s+sac(o|a)/.test(t)) {
-      state.server = "home";
-      render();
-      return;
-    }
-
-    if (/(saque|saca|sacando).*(adversario|ele)/.test(t) ||
-        /(ele|adversario)\\s+sac(a|ando)/.test(t)) {
-      state.server = "away";
-      render();
-      return;
-    }
-
-    const parsed = extractScore(raw);
-    if (!parsed) return;
-
-    if (parsed.zeroZero) {
-      finishGame();
-      return;
-    }
-
-    setScore(parsed.home, parsed.away);
-  }
-
-  function setupRecognition() {
-    if (!SpeechRecognition) {
-      setStatus("NÃO SUPORTADO", false, true);
-      $("startBtn").disabled = true;
-      $("lastCommand").textContent = "Seu navegador não disponibiliza Web Speech API.";
-      return;
-    }
-
-    const r = new SpeechRecognition();
-    r.lang = "pt-BR";
-    r.continuous = true;
-    r.interimResults = false;
-    r.maxAlternatives = 3;
-    state.recognition = r;
-
-    r.onstart = () => {
-      state.running = true;
-      state.restarting = false;
-      setStatus("OUVINDO", true);
-      $("startBtn").textContent = "🟢 Voz ativa";
+        partidaFinalizada: false
     };
 
-    r.onresult = event => {
-      for (let i = event.resultIndex; i < event.results.length; i++) {
-        if (event.results[i].isFinal) {
-          const result = event.results[i];
-          const text = result[0].transcript;
-          processCommand(text);
+
+    /*
+    Histórico de estados para desfazer.
+    */
+
+    let historicoEstados = [];
+
+
+    /*
+    ==========================================================
+    SELECIONAR SACADOR
+    ==========================================================
+    */
+
+    function selecionarSaque(jogador) {
+
+        saqueInicial = jogador;
+
+        document
+            .getElementById("serveCasa")
+            .classList.toggle("selected", jogador === 1);
+
+        document
+            .getElementById("serveFora")
+            .classList.toggle("selected", jogador === 2);
+    }
+
+
+    /*
+    ==========================================================
+    INICIAR PARTIDA
+    ==========================================================
+    */
+
+    function iniciarPartida() {
+
+        if (!SpeechRecognition) {
+
+            alert(
+                "Seu navegador não suporta reconhecimento de voz. " +
+                "Tente usar Google Chrome."
+            );
+
+            return;
         }
-      }
-    };
 
-    r.onerror = event => {
-      console.log("SpeechRecognition:", event.error);
-      if (["not-allowed","service-not-allowed"].includes(event.error)) {
-        state.shouldRestart = false;
-        state.running = false;
-        setStatus("PERMISSÃO NEGADA", false, true);
-        $("lastCommand").textContent = "Permita o microfone nas configurações do navegador.";
-      } else {
-        setStatus("RECONECTANDO…", false);
-      }
-    };
 
-    r.onend = () => {
-      state.running = false;
-      if (state.shouldRestart) {
-        setStatus("RECONECTANDO…");
-        // Alguns navegadores encerram recognition mesmo com continuous=true.
-        // Reiniciamos após um pequeno intervalo.
-        clearTimeout(state.restartTimer);
-        state.restartTimer = setTimeout(() => {
-          if (!state.shouldRestart) return;
-          try { r.start(); } catch(e) {}
-        }, 350);
-      } else {
-        setStatus("PARADO");
-        $("startBtn").textContent = "🎙️ Iniciar voz";
-      }
-    };
-  }
+        const casa =
+            document
+                .getElementById("nomeCasa")
+                .value
+                .trim();
 
-  function startVoice() {
-    if (!state.recognition) setupRecognition();
-    if (!state.recognition) return;
+        const fora =
+            document
+                .getElementById("nomeFora")
+                .value
+                .trim();
 
-    state.shouldRestart = true;
-    try {
-      state.recognition.start();
-    } catch (e) {
-      // start() lança erro se já estiver ativo; nesse caso apenas mantemos o estado.
-      setStatus("OUVINDO", true);
+
+        estado.casa =
+            casa || "Casa";
+
+        estado.fora =
+            fora || "Fora";
+
+        estado.sacando =
+            saqueInicial;
+
+
+        partidaIniciada = true;
+
+
+        document
+            .getElementById("setup")
+            .classList.add("hidden");
+
+        document
+            .getElementById("match")
+            .classList.remove("hidden");
+
+
+        atualizarInterface();
+
+        adicionarHistorico(
+            `Partida iniciada • Saque: ${nomeJogador(estado.sacando)}`
+        );
+
+
+        configurarReconhecimento();
+
+        iniciarReconhecimento();
     }
-  }
 
-  function stopVoice() {
-    state.shouldRestart = false;
-    clearTimeout(state.restartTimer);
-    try { state.recognition.stop(); } catch(e) {}
-    state.running = false;
-    setStatus("PARADO");
-    $("startBtn").textContent = "🎙️ Iniciar voz";
-  }
 
-  function resetGame() {
-    state.homePoints = "0";
-    state.awayPoints = "0";
-    state.homeGames = 0;
-    state.awayGames = 0;
-    state.server = null;
-    state.previousLeader = null;
-    $("lastCommand").textContent = "Aguardando comando...";
-    render();
-  }
+    /*
+    ==========================================================
+    CONFIGURAR VOZ
+    ==========================================================
+    */
 
-  $("startBtn").addEventListener("click", () => {
-    if (state.running) stopVoice(); else startVoice();
-  });
+    function configurarReconhecimento() {
 
-  $("resetBtn").addEventListener("click", resetGame);
+        recognition = new SpeechRecognition();
 
-  // Tenta manter a sessão ativa quando a aba volta ao primeiro plano.
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && state.shouldRestart && !state.running) {
-      setTimeout(startVoice, 250);
+        recognition.lang = "pt-BR";
+
+        /*
+        Queremos resultados parciais para conseguir acompanhar
+        o que está sendo reconhecido.
+        */
+
+        recognition.interimResults = true;
+
+        /*
+        false = recebemos frases completas.
+        */
+
+        recognition.continuous = true;
+
+
+        recognition.onstart = function() {
+
+            reconhecendo = true;
+
+            const status =
+                document.getElementById(
+                    "microphoneStatus"
+                );
+
+            status.classList.add("active");
+
+            status.innerHTML =
+                '<span class="dot"></span> 🟢 ESCUTANDO';
+        };
+
+
+        recognition.onend = function() {
+
+            reconhecendo = false;
+
+            const status =
+                document.getElementById(
+                    "microphoneStatus"
+                );
+
+            status.classList.remove("active");
+
+            status.innerHTML =
+                "🔴 Reconhecimento interrompido";
+
+
+            /*
+            Tenta iniciar novamente automaticamente.
+            */
+
+            if (
+                partidaIniciada &&
+                !estado.partidaFinalizada
+            ) {
+
+                setTimeout(() => {
+
+                    iniciarReconhecimento();
+
+                }, 500);
+            }
+        };
+
+
+        recognition.onerror = function(event) {
+
+            console.log(
+                "Erro no reconhecimento:",
+                event.error
+            );
+
+
+            /*
+            Erros comuns como no-speech não encerram
+            a partida.
+            */
+
+            if (
+                event.error === "not-allowed" ||
+                event.error === "service-not-allowed"
+            ) {
+
+                document
+                    .getElementById("microphoneStatus")
+                    .innerHTML =
+                    "⚠️ Permissão do microfone bloqueada.";
+
+                return;
+            }
+        };
+
+
+        recognition.onresult = function(event) {
+
+            let fraseFinal = "";
+
+
+            for (
+                let i = event.resultIndex;
+                i < event.results.length;
+                i++
+            ) {
+
+                const resultado =
+                    event.results[i];
+
+                const texto =
+                    resultado[0].transcript.trim();
+
+
+                /*
+                Mostra o que está sendo ouvido.
+                */
+
+                document
+                    .getElementById("ultimoComando")
+                    .textContent = texto;
+
+
+                /*
+                Só processamos resultado final.
+                */
+
+                if (resultado.isFinal) {
+
+                    fraseFinal += " " + texto;
+                }
+            }
+
+
+            fraseFinal =
+                fraseFinal.trim();
+
+
+            if (fraseFinal) {
+
+                processarComando(fraseFinal);
+            }
+        };
     }
-  });
 
-  // Impede que o celular apague a tela quando o navegador suportar Wake Lock.
-  let wakeLock = null;
-  async function requestWakeLock() {
-    try {
-      if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
-    } catch(e) {}
-  }
-  document.addEventListener("visibilitychange", () => {
-    if (!document.hidden && state.shouldRestart) requestWakeLock();
-  });
-  $("startBtn").addEventListener("click", requestWakeLock);
 
-  setupRecognition();
-  render();
-})();
+    /*
+    ==========================================================
+    INICIAR RECONHECIMENTO
+    ==========================================================
+    */
+
+    function iniciarReconhecimento() {
+
+        if (!recognition || reconhecendo) {
+            return;
+        }
+
+        try {
+
+            recognition.start();
+
+        } catch (erro) {
+
+            console.log(
+                "Reconhecimento já estava iniciado."
+            );
+        }
+    }
+
+
+    /*
+    ==========================================================
+    NORMALIZAR TEXTO
+    ==========================================================
+    */
+
+    function normalizar(texto) {
+
+        return texto
+            .toLowerCase()
+            .normalize("NFD")
+            .replace(/[\u0300-\u036f]/g, "")
+            .replace(/[.,!?;:]/g, " ")
+            .replace(/\s+/g, " ")
+            .trim();
+    }
+
+
+    /*
+    ==========================================================
+    NÚMEROS FALADOS
+    ==========================================================
+    */
+
+    function converterNumero(texto) {
+
+        const numeros = {
+
+            "zero": 0,
+
+            "quinze": 15,
+
+            "quize": 15,
+
+            "quinse": 15,
+
+            "trinta": 30,
+
+            "quarenta": 40,
+
+            "quarenta e cinco": 45,
+
+            "um": 1,
+            "uma": 1,
+
+            "dois": 2,
+            "duas": 2,
+
+            "tres": 3,
+
+            "quatro": 4,
+
+            "cinco": 5,
+
+            "seis": 6,
+
+            "sete": 7,
+
+            "oito": 8,
+
+            "nove": 9,
+
+            "dez": 10
+        };
+
+
+        if (
+            Object.prototype.hasOwnProperty.call(
+                numeros,
+                texto
+            )
+        ) {
+
+            return numeros[texto];
+        }
+
+
+        const numero =
+            parseInt(texto, 10);
+
+
+        if (!isNaN(numero)) {
+
+            return numero;
+        }
+
+
+        return null;
+    }
+
+
+    /*
+    ==========================================================
+    CONVERTER PALAVRAS DE PONTUAÇÃO
+    ==========================================================
+    */
+
+    function normalizarNumeroFalado(texto) {
+
+        texto = normalizar(texto);
+
+
+        const mapa = {
+
+            "zero": "0",
+
+            "quinze": "15",
+            "quize": "15",
+            "quinse": "15",
+
+            "trinta": "30",
+
+            "quarenta": "40",
+
+            "quarenta e cinco": "45"
+        };
+
+
+        for (const palavra in mapa) {
+
+            texto =
+                texto.replace(
+                    new RegExp(
+                        "\\b" +
+                        palavra +
+                        "\\b",
+                        "g"
+                    ),
+                    mapa[palavra]
+                );
+        }
+
+
+        return texto;
+    }
+
+
+    /*
+    ==========================================================
+    IDENTIFICAR JOGADOR
+    ==========================================================
+    */
+
+    function identificarJogador(texto) {
+
+        texto = normalizar(texto);
+
+
+        /*
+        CASA
+        */
+
+        if (
+            texto.includes("casa") ||
+            texto.includes("minha") ||
+            texto.includes("meu") ||
+            texto.includes("home")
+        ) {
+
+            return "casa";
+        }
+
+
+        /*
+        FORA
+        */
+
+        if (
+            texto.includes("fora") ||
+            texto.includes("adversario") ||
+            texto.includes("adversária") ||
+            texto.includes("visitante") ||
+            texto.includes("away")
+        ) {
+
+            return "fora";
+        }
+
+
+        /*
+        Nome real da Casa
+        */
+
+        const nomeCasa =
+            normalizar(estado.casa);
+
+        if (
+            nomeCasa &&
+            texto.includes(nomeCasa)
+        ) {
+
+            return "casa";
+        }
+
+
+        /*
+        Nome real do Fora
+        */
+
+        const nomeFora =
+            normalizar(estado.fora);
+
+        if (
+            nomeFora &&
+            texto.includes(nomeFora)
+        ) {
+
+            return "fora";
+        }
+
+
+        return null;
+    }
+
+
+    /*
+    ==========================================================
+    PROCESSAR COMANDO
+    ==========================================================
+    */
+
+    function processarComando(fraseOriginal) {
+
+        if (
+            !partidaIniciada ||
+            estado.partidaFinalizada
+        ) {
+
+            return;
+        }
+
+
+        let texto =
+            normalizar(fraseOriginal);
+
+
+        document
+            .getElementById("ultimoComando")
+            .textContent =
+            fraseOriginal;
+
+
+        /*
+        ======================================================
+        DESFAZER
+        ======================================================
+        */
+
+        if (
+            texto.includes("desfaz") ||
+            texto.includes("desfazer") ||
+            texto.includes("corrige") ||
+            texto.includes("corrigir") ||
+            texto.includes("volta um")
+        ) {
+
+            desfazerPorVoz();
+
+            return;
+        }
+
+
+        /*
+        ======================================================
+        DEUCE
+        ======================================================
+        */
+
+        if (
+            texto === "deuce" ||
+            texto.includes("iguais") ||
+            texto.includes("40 iguais") ||
+            texto.includes("quarenta iguais")
+        ) {
+
+            salvarEstado();
+
+            estado.pontos.casa = 40;
+            estado.pontos.fora = 40;
+            estado.vantagem = null;
+
+            registrarAcao("Placar ajustado para Deuce");
+
+            atualizarInterface();
+
+            return;
+        }
+
+
+        /*
+        ======================================================
+        VANTAGEM
+        ======================================================
+        */
+
+        if (
+            texto.includes("vantagem")
+        ) {
+
+            const jogador =
+                identificarJogador(texto);
+
+
+            if (jogador) {
+
+                salvarEstado();
+
+                estado.pontos.casa = 40;
+                estado.pontos.fora = 40;
+
+                estado.vantagem = jogador;
+
+                registrarAcao(
+                    `Vantagem ${nomeJogadorTexto(jogador)}`
+                );
+
+                atualizarInterface();
+
+                return;
+            }
+        }
+
+
+        /*
+        ======================================================
+        GAME DECLARADO
+        ======================================================
+        */
+
+        if (
+            texto.includes("game")
+        ) {
+
+            const jogador =
+                identificarJogador(texto);
+
+
+            if (jogador) {
+
+                ganharGame(jogador);
+
+                return;
+            }
+        }
+
+
+        /*
+        ======================================================
+        PLACAR FALADO
+        ======================================================
+        */
+
+        if (
+            processarPlacarFalado(texto)
+        ) {
+
+            return;
+        }
+
+
+        /*
+        ======================================================
+        PONTO
+        ======================================================
+        */
+
+        if (
+            texto.includes("ponto") ||
+            texto.includes("ponto para") ||
+            texto.includes("ponto de")
+        ) {
+
+            const jogador =
+                identificarJogador(texto);
+
+
+            if (jogador) {
+
+                adicionarPonto(jogador);
+
+                return;
+            }
+        }
+
+
+        /*
+        ======================================================
+        COMANDO DIRETO
+        ======================================================
+
+        Exemplos:
+
+        "casa ganhou"
+        "fora ganhou"
+        "casa venceu o ponto"
+        */
+
+        if (
+            texto.includes("ganhou") ||
+            texto.includes("venceu")
+        ) {
+
+            const jogador =
+                identificarJogador(texto);
+
+
+            if (jogador) {
+
+                adicionarPonto(jogador);
+
+                return;
+            }
+        }
+
+
+        /*
+        Se chegou aqui, não entendeu.
+        */
+
+        registrarAcao(
+            "Não entendi o comando. Placar não alterado."
+        );
+    }
+
+
+    /*
+    ==========================================================
+    PROCESSAR "15 A 30"
+    ==========================================================
+    */
+
+    function processarPlacarFalado(textoOriginal) {
+
+        let texto =
+            normalizarNumeroFalado(textoOriginal);
+
+
+        /*
+        Remove palavras que podem aparecer entre os números.
+        */
+
+        texto =
+            texto
+                .replace(/\ba\b/g, " ")
+                .replace(/\bpara\b/g, " ")
+                .replace(/\bx\b/g, " ")
+                .replace(/\bpor\b/g, " ")
+                .replace(/\bde\b/g, " ")
+                .replace(/\s+/g, " ")
+                .trim();
+
+
+        const partes =
+            texto.split(" ");
+
+
+        if (partes.length < 2) {
+            return false;
+        }
+
+
+        const numeros = [];
+
+
+        for (const parte of partes) {
+
+            const numero =
+                converterNumero(parte);
+
+
+            if (
+                numero !== null &&
+                (
+                    numero === 0 ||
+                    numero === 15 ||
+                    numero === 30 ||
+                    numero === 40 ||
+                    numero === 1 ||
+                    numero === 2 ||
+                    numero === 3 ||
+                    numero === 4 ||
+                    numero === 5 ||
+                    numero === 6 ||
+                    numero === 7
+                )
+            ) {
+
+                numeros.push(numero);
+            }
+        }
+
+
+        if (numeros.length !== 2) {
+            return false;
+        }
+
+
+        const p1 = numeros[0];
+        const p2 = numeros[1];
+
+
+        /*
+        Não usamos "0 x 0" para decidir vencedor.
+        */
+
+        if (
+            p1 === 0 &&
+            p2 === 0
+        ) {
+
+            registrarAcao(
+                "0 × 0 reconhecido. Nenhum ponto alterado."
+            );
+
+            return true;
+        }
+
+
+        salvarEstado();
+
+
+        estado.pontos.casa = p1;
+        estado.pontos.fora = p2;
+
+
+        if (
+            p1 === 40 &&
+            p2 === 40
+        ) {
+
+            estado.vantagem = null;
+
+        } else {
+
+            estado.vantagem = null;
+        }
+
+
+        registrarAcao(
+            `Placar definido: ${p1} × ${p2}`
+        );
+
+
+        atualizarInterface();
+
+        return true;
+    }
+
+
+    /*
+    ==========================================================
+    ADICIONAR PONTO
+    ==========================================================
+    */
+
+    function adicionarPonto(jogador) {
+
+        salvarEstado();
+
+
+        const outro =
+            jogador === "casa"
+                ? "fora"
+                : "casa";
+
+
+        /*
+        ======================================================
+        DEUCE
+        ======================================================
+        */
+
+        if (
+            estado.pontos.casa >= 40 &&
+            estado.pontos.fora >= 40
+        ) {
+
+            /*
+            Sem vantagem:
+            jogador ganha vantagem.
+            */
+
+            if (
+                estado.vantagem === null
+            ) {
+
+                estado.vantagem = jogador;
+
+                registrarAcao(
+                    `Vantagem ${nomeJogadorTexto(jogador)}`
+                );
+
+                atualizarInterface();
+
+                return;
+            }
+
+
+            /*
+            Jogador já tinha vantagem:
+            ganhou o game.
+            */
+
+            if (
+                estado.vantagem === jogador
+            ) {
+
+                ganharGame(jogador);
+
+                return;
+            }
+
+
+            /*
+            Adversário tinha vantagem:
+            volta para Deuce.
+            */
+
+            estado.vantagem = null;
+
+            estado.pontos.casa = 40;
+            estado.pontos.fora = 40;
+
+
+            registrarAcao("Deuce");
+
+
+            atualizarInterface();
+
+            return;
+        }
+
+
+        /*
+        ======================================================
+        PONTUAÇÃO NORMAL
+        ======================================================
+        */
+
+        const atual =
+            estado.pontos[jogador];
+
+
+        if (atual === 0) {
+
+            estado.pontos[jogador] = 15;
+
+        } else if (atual === 15) {
+
+            estado.pontos[jogador] = 30;
+
+        } else if (atual === 30) {
+
+            /*
+            Se adversário ainda está abaixo de 40,
+            vai para 40.
+            */
+
+            estado.pontos[jogador] = 40;
+
+        } else if (atual === 40) {
+
+            const outroPonto =
+                estado.pontos[outro];
+
+
+            /*
+            40 contra menos de 40:
+            ganhou o game.
+            */
+
+            if (
+                outroPonto < 40
+            ) {
+
+                ganharGame(jogador);
+
+                return;
+            }
+        }
+
+
+        /*
+        Segurança adicional:
+        */
+
+        if (
+            estado.pontos[jogador] === 40 &&
+            estado.pontos[outro] < 40
+        ) {
+
+            /*
+            Ainda não ganhou.
+            */
+
+        }
+
+
+        registrarAcao(
+            `${nomeJogadorTexto(jogador)} ganhou o ponto`
+        );
+
+
+        atualizarInterface();
+    }
+
+
+    /*
+    ==========================================================
+    GANHAR GAME
+    ==========================================================
+    */
+
+    function ganharGame(jogador) {
+
+        salvarEstado();
+
+
+        estado.games[jogador]++;
+
+
+        registrarAcao(
+            `🎾 GAME ${nomeJogadorTexto(jogador)}`
+        );
+
+
+        /*
+        Próximo game começa 0 × 0.
+        */
+
+        estado.pontos.casa = 0;
+        estado.pontos.fora = 0;
+
+        estado.vantagem = null;
+
+
+        /*
+        Alternância de saque.
+
+        Regra simplificada:
+        troca o sacador a cada game.
+        */
+
+        estado.sacando =
+            estado.sacando === 1
+                ? 2
+                : 1;
+
+
+        verificarSet(jogador);
+
+        atualizarInterface();
+    }
+
+
+    /*
+    ==========================================================
+    VERIFICAR SET
+    ==========================================================
+    */
+
+    function verificarSet(jogador) {
+
+        const outro =
+            jogador === "casa"
+                ? "fora"
+                : "casa";
+
+
+        const meusGames =
+            estado.games[jogador];
+
+        const outrosGames =
+            estado.games[outro];
+
+
+        /*
+        6 games com diferença de 2.
+        */
+
+        if (
+            meusGames >= 6 &&
+            meusGames - outrosGames >= 2
+        ) {
+
+            ganharSet(jogador);
+
+            return;
+        }
+
+
+        /*
+        7 games contra 5 também fecha.
+        */
+
+        if (
+            meusGames === 7 &&
+            outrosGames <= 5
+        ) {
+
+            ganharSet(jogador);
+
+            return;
+        }
+
+
+        /*
+        6 × 6:
+        Aqui deixamos registrado como tie-break.
+
+        Para uma versão profissional podemos adicionar
+        o placar específico do tie-break.
+        */
+
+        if (
+            meusGames === 6 &&
+            outrosGames === 6
+        ) {
+
+            registrarAcao(
+                "⚡ 6 × 6 — Tie-break"
+            );
+        }
+    }
+
+
+    /*
+    ==========================================================
+    GANHAR SET
+    ==========================================================
+    */
+
+    function ganharSet(jogador) {
+
+        const numero =
+            estado.setAtual;
+
+
+        estado.placarSets.push({
+
+            casa: estado.games.casa,
+
+            fora: estado.games.fora
+
+        });
+
+
+        estado.sets[jogador]++;
+
+
+        registrarAcao(
+            `🏆 ${nomeJogadorTexto(jogador)} ganhou o ${numero}º set`
+        );
+
+
+        /*
+        Melhor de 3:
+        dois sets vencidos = partida ganha.
+        */
+
+        if (
+            estado.sets[jogador] >= 2
+        ) {
+
+            finalizarPartida(jogador);
+
+            return;
+        }
+
+
+        /*
+        Próximo set.
+        */
+
+        estado.setAtual++;
+
+        estado.games.casa = 0;
+        estado.games.fora = 0;
+
+        estado.pontos.casa = 0;
+        estado.pontos.fora = 0;
+
+        estado.vantagem = null;
+
+
+        atualizarInterface();
+    }
+
+
+    /*
+    ==========================================================
+    FINALIZAR PARTIDA
+    ==========================================================
+    */
+
+    function finalizarPartida(jogador) {
+
+        estado.partidaFinalizada = true;
+
+
+        registrarAcao(
+            `🏆 ${nomeJogadorTexto(jogador)} VENCEU A PARTIDA`
+        );
+
+
+        const status =
+            document.getElementById("gameStatus");
+
+
+        status.textContent =
+            `🏆 ${nomeJogadorTexto(jogador)} venceu a partida!`;
+
+        status.style.background =
+            "#dcfce7";
+
+        status.style.color =
+            "#166534";
+
+
+        if (recognition) {
+
+            try {
+                recognition.stop();
+            } catch (e) {}
+        }
+
+
+        atualizarInterface();
+    }
+
+
+    /*
+    ==========================================================
+    DESFAZER
+    ==========================================================
+    */
+
+    function salvarEstado() {
+
+        /*
+        Evita acumular cópias infinitas.
+        */
+
+        historicoEstados.push(
+            JSON.parse(
+                JSON.stringify(estado)
+            )
+        );
+
+
+        if (
+            historicoEstados.length > 100
+        ) {
+
+            historicoEstados.shift();
+        }
+    }
+
+
+    function desfazerPorVoz() {
+
+        if (
+            historicoEstados.length === 0
+        ) {
+
+            registrarAcao(
+                "Não há nada para desfazer."
+            );
+
+            return;
+        }
+
+
+        estado =
+            historicoEstados.pop();
+
+
+        registrarAcao(
+            "↩ Última ação desfeita."
+        );
+
+
+        atualizarInterface();
+    }
+
+
+    /*
+    ==========================================================
+    NOMES
+    ==========================================================
+    */
+
+    function nomeJogador(jogador) {
+
+        return jogador === 1
+            ? estado.casa
+            : estado.fora;
+    }
+
+
+    function nomeJogadorTexto(jogador) {
+
+        return jogador === "casa"
+            ? estado.casa
+            : estado.fora;
+    }
+
+
+    /*
+    ==========================================================
+    PONTOS VISUAIS
+    ==========================================================
+    */
+
+    function mostrarPonto(jogador) {
+
+        const ponto =
+            estado.pontos[jogador];
+
+
+        if (
+            estado.pontos.casa >= 40 &&
+            estado.pontos.fora >= 40
+        ) {
+
+            if (
+                estado.vantagem === jogador
+            ) {
+
+                return "V";
+            }
+
+            return "40";
+        }
+
+
+        return ponto;
+    }
+
+
+    /*
+    ==========================================================
+    ATUALIZAR INTERFACE
+    ==========================================================
+    */
+
+    function atualizarInterface() {
+
+        /*
+        Nomes
+        */
+
+        document
+            .getElementById("nomeTabelaCasa")
+            .textContent =
+            estado.casa;
+
+        document
+            .getElementById("nomeTabelaFora")
+            .textContent =
+            estado.fora;
+
+        document
+            .getElementById("nomeCasaPlacar")
+            .textContent =
+            estado.casa;
+
+        document
+            .getElementById("nomeForaPlacar")
+            .textContent =
+            estado.fora;
+
+
+        /*
+        Pontos
+        */
+
+        document
+            .getElementById("pontosCasa")
+            .textContent =
+            mostrarPonto("casa");
+
+        document
+            .getElementById("pontosFora")
+            .textContent =
+            mostrarPonto("fora");
+
+
+        /*
+        Games
+        */
+
+        document
+            .getElementById("setInfo")
+            .textContent =
+            `${estado.setAtual}º SET • ` +
+            `${estado.games.casa} × ${estado.games.fora} GAMES`;
+
+
+        /*
+        Sets ganhos
+        */
+
+        document
+            .getElementById("setsCasa")
+            .textContent =
+            estado.sets.casa;
+
+        document
+            .getElementById("setsFora")
+            .textContent =
+            estado.sets.fora;
+
+
+        /*
+        Placar dos sets já encerrados
+        */
+
+        for (
+            let i = 1;
+            i <= 3;
+            i++
+        ) {
+
+            const set =
+                estado.placarSets[i - 1];
+
+
+            document
+                .getElementById(`set${i}Casa`)
+                .textContent =
+                set
+                    ? set.casa
+                    : "-";
+
+
+            document
+                .getElementById(`set${i}Fora`)
+                .textContent =
+                set
+                    ? set.fora
+                    : "-";
+        }
+
+
+        /*
+        Status do game
+        */
+
+        const status =
+            document.getElementById(
+                "gameStatus"
+            );
+
+
+        if (
+            !estado.partidaFinalizada
+        ) {
+
+            status.style.background =
+                "#eff6ff";
+
+            status.style.color =
+                "#1e40af";
+
+
+            if (
+                estado.vantagem === "casa"
+            ) {
+
+                status.textContent =
+                    `Vantagem ${estado.casa}`;
+
+            } else if (
+                estado.vantagem === "fora"
+            ) {
+
+                status.textContent =
+                    `Vantagem ${estado.fora}`;
+
+            } else if (
+                estado.pontos.casa === 40 &&
+                estado.pontos.fora === 40
+            ) {
+
+                status.textContent =
+                    "40 × 40 — DEUCE";
+
+            } else {
+
+                status.textContent =
+                    `Saque: ${nomeJogador(estado.sacando)}`;
+            }
+        }
+
+
+        /*
+        Destaque de vantagem
+        */
+
+        document
+            .getElementById("cardCasa")
+            .classList.toggle(
+                "advantage",
+                estado.vantagem === "casa"
+            );
+
+
+        document
+            .getElementById("cardFora")
+            .classList.toggle(
+                "advantage",
+                estado.vantagem === "fora"
+            );
+    }
+
+
+    /*
+    ==========================================================
+    HISTÓRICO
+    ==========================================================
+    */
+
+    function registrarAcao(texto) {
+
+        const agora =
+            new Date().toLocaleTimeString(
+                "pt-BR",
+                {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit"
+                }
+            );
+
+
+        const historico =
+            document.getElementById(
+                "historico"
+            );
+
+
+        if (
+            historico.textContent ===
+            "Nenhum evento ainda."
+        ) {
+
+            historico.innerHTML = "";
+        }
+
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "history-item";
+
+        item.textContent =
+            `${agora} — ${texto}`;
+
+
+        historico.prepend(item);
+
+
+        /*
+        Mostra também na área de ação.
+        */
+
+        document
+            .getElementById("ultimaAcao")
+            .textContent =
+            texto;
+    }
+
+
+    function adicionarHistorico(texto) {
+
+        registrarAcao(texto);
+    }
+
+
+    /*
+    ==========================================================
+    NOVA PARTIDA
+    ==========================================================
+    */
+
+    function novaPartida() {
+
+        if (
+            recognition
+        ) {
+
+            try {
+                recognition.stop();
+            } catch (e) {}
+        }
+
+
+        partidaIniciada = false;
+
+        location.reload();
+    }
+
 </script>
+
 </body>
 </html>

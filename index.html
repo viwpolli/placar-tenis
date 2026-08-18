@@ -1,33 +1,48 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>Placar de Tênis por Voz</title>
 
+
     <style>
+
         :root {
-            --green: #10b981;
-            --green-dark: #059669;
-            --red: #ef4444;
-            --blue: #2563eb;
-            --bg: #f3f4f6;
+            --verde: #10b981;
+            --verde-escuro: #059669;
+            --azul: #2563eb;
+            --vermelho: #dc2626;
+            --fundo: #f3f4f6;
             --card: #ffffff;
-            --text: #111827;
-            --muted: #6b7280;
-            --border: #e5e7eb;
+            --texto: #111827;
+            --cinza: #6b7280;
+            --borda: #e5e7eb;
         }
+
 
         * {
             box-sizing: border-box;
         }
 
+
         body {
+
             margin: 0;
-            padding: 16px;
-            background: var(--bg);
-            color: var(--text);
+
+            padding: 15px;
+
+            background: var(--fundo);
+
+            color: var(--texto);
+
             font-family:
                 -apple-system,
                 BlinkMacSystemFont,
@@ -37,132 +52,246 @@
                 sans-serif;
         }
 
+
         .container {
+
             width: 100%;
+
             max-width: 700px;
+
             margin: auto;
         }
 
+
         .card {
+
             background: var(--card);
+
             border-radius: 18px;
+
             padding: 22px;
+
             margin-bottom: 16px;
-            box-shadow: 0 8px 25px rgba(0,0,0,.06);
+
+            box-shadow:
+                0 8px 25px rgba(0,0,0,.06);
         }
 
+
         h1 {
+
             text-align: center;
+
             margin: 0 0 5px;
+
             font-size: 28px;
         }
 
-        .subtitle {
+
+        .subtitulo {
+
             text-align: center;
-            color: var(--muted);
+
+            color: var(--cinza);
+
             margin-bottom: 22px;
         }
 
-        .setup-grid {
+
+        /* =========================================
+           CONFIGURAÇÃO
+        ========================================= */
+
+        .config-grid {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 12px;
         }
 
+
         label {
+
             display: block;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--muted);
+
             margin-bottom: 6px;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+            color: var(--cinza);
         }
 
+
         input {
+
             width: 100%;
+
             padding: 13px;
-            border: 2px solid var(--border);
+
+            border: 2px solid var(--borda);
+
             border-radius: 10px;
+
             font-size: 16px;
+
             outline: none;
         }
 
+
         input:focus {
-            border-color: var(--green);
+
+            border-color: var(--verde);
         }
 
-        .serve-box {
-            margin-top: 15px;
+
+        .saque {
+
+            margin-top: 18px;
         }
 
-        .serve-buttons {
+
+        .saque-botoes {
+
             display: grid;
+
             grid-template-columns: 1fr 1fr;
+
             gap: 10px;
         }
 
+
         button {
+
             border: 0;
+
             border-radius: 10px;
+
             padding: 14px;
+
             font-size: 16px;
+
             font-weight: 700;
+
             cursor: pointer;
         }
 
-        .serve-button {
-            background: #f3f4f6;
-            border: 2px solid var(--border);
+
+        .botao-saque {
+
+            background: #f9fafb;
+
+            border: 2px solid var(--borda);
         }
 
-        .serve-button.selected {
+
+        .botao-saque.selecionado {
+
             background: #ecfdf5;
-            border-color: var(--green);
+
+            border-color: var(--verde);
+
             color: #047857;
         }
 
-        .start-button {
+
+        .botao-iniciar {
+
             width: 100%;
+
             margin-top: 18px;
-            background: var(--green);
+
+            background: var(--verde);
+
             color: white;
+
+            font-size: 17px;
         }
 
-        .start-button:hover {
-            background: var(--green-dark);
+
+        .botao-iniciar:hover {
+
+            background: var(--verde-escuro);
         }
+
+
+        .aviso {
+
+            margin-top: 15px;
+
+            padding: 12px;
+
+            border-radius: 10px;
+
+            background: #fff7ed;
+
+            color: #9a3412;
+
+            font-size: 13px;
+
+            line-height: 1.5;
+        }
+
 
         .hidden {
+
             display: none !important;
         }
 
-        /* STATUS DO MICROFONE */
 
-        .listening {
-            text-align: center;
+        /* =========================================
+           MICROFONE
+        ========================================= */
+
+        .microfone {
+
             padding: 15px;
+
             border-radius: 12px;
-            background: #fee2e2;
-            color: #991b1b;
+
+            text-align: center;
+
             font-weight: 800;
-            margin-bottom: 20px;
+
+            background: #fee2e2;
+
+            color: #991b1b;
+
+            margin-bottom: 16px;
         }
 
-        .listening.active {
+
+        .microfone.ouvindo {
+
             background: #dcfce7;
+
             color: #166534;
         }
 
-        .dot {
+
+        .bolinha {
+
             display: inline-block;
+
             width: 10px;
+
             height: 10px;
-            background: currentColor;
+
             border-radius: 50%;
+
+            background: currentColor;
+
             margin-right: 7px;
-            animation: pulse 1.2s infinite;
+
+            animation: pulsar 1.2s infinite;
         }
 
-        @keyframes pulse {
+
+        @keyframes pulsar {
+
             0% {
                 opacity: .3;
                 transform: scale(.8);
@@ -179,228 +308,346 @@
             }
         }
 
-        /* SETS */
 
-        .sets-table-wrapper {
+        /* =========================================
+           PLACAR DOS SETS
+        ========================================= */
+
+        .tabela-container {
+
             overflow-x: auto;
         }
 
+
         table {
+
             width: 100%;
+
             border-collapse: collapse;
-            min-width: 420px;
+
+            min-width: 430px;
         }
+
 
         th,
         td {
+
             padding: 12px;
-            border-bottom: 1px solid var(--border);
+
+            border-bottom: 1px solid var(--borda);
+
             text-align: center;
         }
 
+
         th {
-            color: var(--muted);
+
+            color: var(--cinza);
+
             font-size: 13px;
         }
 
-        .name-cell {
+
+        .nome-tabela {
+
             text-align: left;
+
             font-weight: 800;
         }
 
-        .set-number {
+
+        .numero-set {
+
             font-size: 20px;
+
             font-weight: 800;
         }
 
-        /* PLACAR */
 
-        .set-info {
+        /* =========================================
+           GAME ATUAL
+        ========================================= */
+
+        .informacao-set {
+
             text-align: center;
-            color: var(--muted);
-            font-weight: 700;
-            margin-bottom: 15px;
+
+            color: var(--cinza);
+
+            font-weight: 800;
+
+            margin-bottom: 16px;
         }
 
-        .score {
+
+        .placar {
+
             display: grid;
+
             grid-template-columns: 1fr auto 1fr;
+
             align-items: center;
+
             gap: 10px;
         }
 
-        .player-score {
+
+        .jogador {
+
             text-align: center;
+
             padding: 20px 8px;
-            border: 2px solid var(--border);
+
             background: #fafafa;
+
+            border: 2px solid var(--borda);
+
             border-radius: 15px;
         }
 
-        .player-score.advantage {
-            border-color: var(--green);
+
+        .jogador.vantagem {
+
             background: #ecfdf5;
+
+            border-color: var(--verde);
         }
 
-        .player-name {
-            font-weight: 800;
+
+        .nome-jogador {
+
             font-size: 17px;
+
+            font-weight: 800;
+
             margin-bottom: 10px;
         }
 
-        .point-score {
+
+        .pontos {
+
             font-size: 50px;
+
             font-weight: 900;
+
             line-height: 1;
         }
 
-        .versus {
+
+        .x {
+
+            font-size: 20px;
+
             font-weight: 800;
-            color: var(--muted);
+
+            color: var(--cinza);
         }
 
-        /* STATUS */
 
-        .game-status {
+        .status {
+
             margin-top: 18px;
+
             padding: 14px;
-            text-align: center;
+
             border-radius: 10px;
+
             background: #eff6ff;
+
             color: #1e40af;
+
+            text-align: center;
+
             font-weight: 800;
         }
 
-        /* VOZ */
 
-        .voice-card {
+        .status.vencedor {
+
+            background: #dcfce7;
+
+            color: #166534;
+        }
+
+
+        /* =========================================
+           VOZ
+        ========================================= */
+
+        .voz {
+
             text-align: center;
         }
 
-        .heard-label {
-            color: var(--muted);
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 7px;
+
+        .titulo-pequeno {
+
+            font-size: 12px;
+
+            color: var(--cinza);
+
+            font-weight: 800;
+
+            margin-bottom: 8px;
         }
 
-        .heard {
-            min-height: 30px;
-            font-size: 18px;
-            font-weight: 700;
+
+        .comando {
+
+            font-size: 19px;
+
+            font-weight: 800;
+
+            min-height: 28px;
         }
 
-        .action {
-            margin-top: 10px;
-            color: var(--green-dark);
+
+        .acao {
+
+            color: var(--verde-escuro);
+
             font-weight: 700;
+
+            margin-top: 8px;
+
+            min-height: 22px;
         }
 
-        /* HISTÓRICO */
 
-        .history {
-            max-height: 250px;
+        /* =========================================
+           HISTÓRICO
+        ========================================= */
+
+        .historico {
+
+            max-height: 280px;
+
             overflow-y: auto;
         }
 
-        .history-item {
+
+        .evento {
+
             padding: 9px 0;
-            border-bottom: 1px solid var(--border);
+
+            border-bottom: 1px solid var(--borda);
+
             font-size: 14px;
         }
 
-        .warning {
-            background: #fff7ed;
-            color: #9a3412;
-            padding: 12px;
-            border-radius: 10px;
-            font-size: 14px;
-            margin-top: 12px;
-        }
 
-        .new-match {
-            width: 100%;
-            background: white;
-            color: var(--text);
-            border: 2px solid var(--border);
-        }
+        /* =========================================
+           RESPONSIVO
+        ========================================= */
 
         @media (max-width: 550px) {
-            .setup-grid {
+
+            .config-grid {
+
                 grid-template-columns: 1fr;
             }
 
-            .point-score {
+
+            .card {
+
+                padding: 17px;
+            }
+
+
+            .pontos {
+
                 font-size: 42px;
             }
 
-            .card {
-                padding: 17px;
+
+            h1 {
+
+                font-size: 24px;
             }
         }
+
     </style>
+
 </head>
+
 
 <body>
 
+
 <div class="container">
 
-    <!-- ==============================
+
+    <!-- =====================================================
          CONFIGURAÇÃO
-    =============================== -->
+    ====================================================== -->
 
-    <div id="setup" class="card">
+    <div id="configuracao" class="card">
 
-        <h1>🎾 Placar por Voz</h1>
+        <h1>🎾 Placar de Tênis</h1>
 
-        <div class="subtitle">
-            Configure a partida antes de começar
+        <div class="subtitulo">
+            Controle a partida usando sua voz
         </div>
 
-        <div class="setup-grid">
+
+        <div class="config-grid">
 
             <div>
-                <label for="nomeCasa">CASA</label>
+
+                <label for="nomeCasa">
+                    CASA
+                </label>
 
                 <input
                     id="nomeCasa"
                     type="text"
-                    placeholder="Ex.: João"
                     value="Casa"
+                    placeholder="Nome da Casa"
                 >
+
             </div>
 
+
             <div>
-                <label for="nomeFora">FORA</label>
+
+                <label for="nomeFora">
+                    FORA
+                </label>
 
                 <input
                     id="nomeFora"
                     type="text"
-                    placeholder="Ex.: Pedro"
                     value="Fora"
+                    placeholder="Nome do Fora"
                 >
+
             </div>
 
         </div>
 
-        <div class="serve-box">
 
-            <label>QUEM COMEÇA SACANDO?</label>
+        <div class="saque">
 
-            <div class="serve-buttons">
+            <label>
+                QUEM COMEÇA SACANDO?
+            </label>
+
+
+            <div class="saque-botoes">
 
                 <button
-                    id="serveCasa"
-                    class="serve-button selected"
-                    onclick="selecionarSaque(1)"
+                    id="saqueCasa"
+                    class="botao-saque selecionado"
+                    onclick="escolherSaque(1)"
                 >
                     🏠 Casa
                 </button>
 
+
                 <button
-                    id="serveFora"
-                    class="serve-button"
-                    onclick="selecionarSaque(2)"
+                    id="saqueFora"
+                    class="botao-saque"
+                    onclick="escolherSaque(2)"
                 >
                     ✈️ Fora
                 </button>
@@ -409,79 +656,177 @@
 
         </div>
 
+
         <button
-            class="start-button"
+            class="botao-iniciar"
             onclick="iniciarPartida()"
         >
             🎙️ INICIAR PARTIDA
         </button>
 
-        <div class="warning">
-            Depois de iniciar, o sistema tentará manter o reconhecimento
-            de voz ativo automaticamente. Mantenha esta página aberta e,
-            de preferência, a tela ligada.
+
+        <div class="aviso">
+
+            Depois de iniciar, o microfone ficará
+            escutando automaticamente.
+
+            <br><br>
+
+            Exemplos:
+
+            <b>“ponto casa”</b>,
+            <b>“15 a 30”</b>,
+            <b>“15 iguais”</b>,
+            <b>“vantagem fora”</b>,
+            <b>“game casa”</b>.
+
+            <br><br>
+
+            Mantenha esta página aberta e,
+            preferencialmente, a tela ligada.
+
         </div>
 
     </div>
 
 
-    <!-- ==============================
+
+    <!-- =====================================================
          PARTIDA
-    =============================== -->
+    ====================================================== -->
 
-    <div id="match" class="hidden">
+    <div id="partida" class="hidden">
 
-        <div id="microphoneStatus" class="listening">
+
+        <!-- MICROFONE -->
+
+        <div
+            id="statusMicrofone"
+            class="microfone"
+        >
             🔴 Microfone parado
         </div>
 
 
-        <!-- SETS -->
+
+        <!-- =================================================
+             PLACAR DOS SETS
+        ================================================== -->
 
         <div class="card">
 
-            <div class="sets-table-wrapper">
+            <div class="tabela-container">
 
                 <table>
 
                     <thead>
+
                         <tr>
-                            <th>Jogador</th>
-                            <th>1º Set</th>
-                            <th>2º Set</th>
-                            <th>3º Set</th>
-                            <th>Sets</th>
+
+                            <th>
+                                Jogador
+                            </th>
+
+                            <th>
+                                1º Set
+                            </th>
+
+                            <th>
+                                2º Set
+                            </th>
+
+                            <th>
+                                3º Set
+                            </th>
+
+                            <th>
+                                Sets
+                            </th>
+
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
                         <tr>
-                            <td id="nomeTabelaCasa" class="name-cell">
+
+                            <td
+                                id="tabelaCasa"
+                                class="nome-tabela"
+                            >
                                 Casa
                             </td>
 
-                            <td id="set1Casa" class="set-number">-</td>
-                            <td id="set2Casa" class="set-number">-</td>
-                            <td id="set3Casa" class="set-number">-</td>
+                            <td
+                                id="set1Casa"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
 
-                            <td id="setsCasa" class="set-number">
+                            <td
+                                id="set2Casa"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
+
+                            <td
+                                id="set3Casa"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
+
+                            <td
+                                id="setsCasa"
+                                class="numero-set"
+                            >
                                 0
                             </td>
+
                         </tr>
 
+
                         <tr>
-                            <td id="nomeTabelaFora" class="name-cell">
+
+                            <td
+                                id="tabelaFora"
+                                class="nome-tabela"
+                            >
                                 Fora
                             </td>
 
-                            <td id="set1Fora" class="set-number">-</td>
-                            <td id="set2Fora" class="set-number">-</td>
-                            <td id="set3Fora" class="set-number">-</td>
+                            <td
+                                id="set1Fora"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
 
-                            <td id="setsFora" class="set-number">
+                            <td
+                                id="set2Fora"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
+
+                            <td
+                                id="set3Fora"
+                                class="numero-set"
+                            >
+                                -
+                            </td>
+
+                            <td
+                                id="setsFora"
+                                class="numero-set"
+                            >
                                 0
                             </td>
+
                         </tr>
 
                     </tbody>
@@ -493,312 +838,417 @@
         </div>
 
 
-        <!-- GAME ATUAL -->
+
+        <!-- =================================================
+             GAME ATUAL
+        ================================================== -->
 
         <div class="card">
 
-            <div id="setInfo" class="set-info">
+            <div
+                id="informacaoSet"
+                class="informacao-set"
+            >
                 1º SET • 0 × 0 GAMES
             </div>
 
-            <div class="score">
 
-                <div id="cardCasa" class="player-score">
+            <div class="placar">
 
-                    <div id="nomeCasaPlacar" class="player-name">
+
+                <div
+                    id="cardCasa"
+                    class="jogador"
+                >
+
+                    <div
+                        id="nomePlacarCasa"
+                        class="nome-jogador"
+                    >
                         Casa
                     </div>
 
-                    <div id="pontosCasa" class="point-score">
+                    <div
+                        id="pontosCasa"
+                        class="pontos"
+                    >
                         0
                     </div>
 
                 </div>
 
-                <div class="versus">×</div>
 
-                <div id="cardFora" class="player-score">
+                <div class="x">
+                    ×
+                </div>
 
-                    <div id="nomeForaPlacar" class="player-name">
+
+                <div
+                    id="cardFora"
+                    class="jogador"
+                >
+
+                    <div
+                        id="nomePlacarFora"
+                        class="nome-jogador"
+                    >
                         Fora
                     </div>
 
-                    <div id="pontosFora" class="point-score">
+                    <div
+                        id="pontosFora"
+                        class="pontos"
+                    >
                         0
                     </div>
 
                 </div>
 
+
             </div>
 
-            <div id="gameStatus" class="game-status">
+
+            <div
+                id="statusJogo"
+                class="status"
+            >
                 Partida em andamento
             </div>
 
         </div>
 
 
-        <!-- RECONHECIMENTO -->
 
-        <div class="card voice-card">
+        <!-- =================================================
+             O QUE FOI ENTENDIDO
+        ================================================== -->
 
-            <div class="heard-label">
-                ÚLTIMO COMANDO ENTENDIDO
+        <div class="card voz">
+
+            <div class="titulo-pequeno">
+                ÚLTIMO COMANDO
             </div>
 
-            <div id="ultimoComando" class="heard">
-                Aguardando você falar...
+
+            <div
+                id="ultimoComando"
+                class="comando"
+            >
+                Aguardando...
             </div>
 
-            <div id="ultimaAcao" class="action">
+
+            <div
+                id="ultimaAcao"
+                class="acao"
+            >
                 —
             </div>
 
         </div>
 
 
-        <!-- HISTÓRICO -->
+
+        <!-- =================================================
+             HISTÓRICO
+        ================================================== -->
 
         <div class="card">
 
-            <h3>📋 Histórico</h3>
+            <h3>
+                📋 Histórico
+            </h3>
 
-            <div id="historico" class="history">
+
+            <div
+                id="historico"
+                class="historico"
+            >
                 Nenhum evento ainda.
             </div>
 
         </div>
 
 
-        <div class="card">
-
-            <button
-                class="new-match"
-                onclick="novaPartida()"
-            >
-                🔄 Nova partida
-            </button>
-
-        </div>
-
     </div>
 
 </div>
 
 
+
 <script>
 
-    /*
-    ==========================================================
-    CONFIGURAÇÃO DO RECONHECIMENTO DE VOZ
-    ==========================================================
-    */
 
-    const SpeechRecognition =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
-
-    let recognition = null;
-    let reconhecendo = false;
-    let partidaIniciada = false;
-
-    /*
-    Qual jogador começa sacando.
-    */
-
-    let saqueInicial = 1;
+/* =========================================================
+   RECONHECIMENTO DE VOZ
+========================================================= */
 
 
-    /*
-    ==========================================================
-    ESTADO DA PARTIDA
-    ==========================================================
-    */
-
-    let estado = {
-        casa: "Casa",
-        fora: "Fora",
-
-        pontos: {
-            casa: 0,
-            fora: 0
-        },
-
-        vantagem: null,
-
-        games: {
-            casa: 0,
-            fora: 0
-        },
-
-        sets: {
-            casa: 0,
-            fora: 0
-        },
-
-        placarSets: [],
-
-        setAtual: 1,
-
-        sacando: 1,
-
-        partidaFinalizada: false
-    };
+const SpeechRecognition =
+    window.SpeechRecognition ||
+    window.webkitSpeechRecognition;
 
 
-    /*
-    Histórico de estados para desfazer.
-    */
+let reconhecimento = null;
 
-    let historicoEstados = [];
+let ouvindo = false;
 
+let partidaIniciada = false;
 
-    /*
-    ==========================================================
-    SELECIONAR SACADOR
-    ==========================================================
-    */
-
-    function selecionarSaque(jogador) {
-
-        saqueInicial = jogador;
-
-        document
-            .getElementById("serveCasa")
-            .classList.toggle("selected", jogador === 1);
-
-        document
-            .getElementById("serveFora")
-            .classList.toggle("selected", jogador === 2);
-    }
+let saqueInicial = 1;
 
 
-    /*
-    ==========================================================
-    INICIAR PARTIDA
-    ==========================================================
-    */
 
-    function iniciarPartida() {
-
-        if (!SpeechRecognition) {
-
-            alert(
-                "Seu navegador não suporta reconhecimento de voz. " +
-                "Tente usar Google Chrome."
-            );
-
-            return;
-        }
+/* =========================================================
+   ESTADO DA PARTIDA
+========================================================= */
 
 
-        const casa =
-            document
-                .getElementById("nomeCasa")
-                .value
-                .trim();
+let estado = {
 
-        const fora =
-            document
-                .getElementById("nomeFora")
-                .value
-                .trim();
+    casa: "Casa",
+
+    fora: "Fora",
 
 
-        estado.casa =
-            casa || "Casa";
+    pontos: {
 
-        estado.fora =
-            fora || "Fora";
+        casa: 0,
 
-        estado.sacando =
-            saqueInicial;
+        fora: 0
 
-
-        partidaIniciada = true;
+    },
 
 
-        document
-            .getElementById("setup")
-            .classList.add("hidden");
-
-        document
-            .getElementById("match")
-            .classList.remove("hidden");
+    vantagem: null,
 
 
-        atualizarInterface();
+    games: {
 
-        adicionarHistorico(
-            `Partida iniciada • Saque: ${nomeJogador(estado.sacando)}`
+        casa: 0,
+
+        fora: 0
+
+    },
+
+
+    sets: {
+
+        casa: 0,
+
+        fora: 0
+
+    },
+
+
+    placarSets: [],
+
+
+    setAtual: 1,
+
+
+    sacando: 1,
+
+
+    tieBreak: false,
+
+
+    tieBreakPontos: {
+
+        casa: 0,
+
+        fora: 0
+
+    },
+
+
+    partidaFinalizada: false
+
+};
+
+
+
+/*
+Histórico completo dos estados.
+
+Serve para "desfaz".
+*/
+
+let estadosAnteriores = [];
+
+
+
+/* =========================================================
+   ESCOLHER SACADOR
+========================================================= */
+
+
+function escolherSaque(jogador) {
+
+    saqueInicial = jogador;
+
+
+    document
+        .getElementById("saqueCasa")
+        .classList.toggle(
+            "selecionado",
+            jogador === 1
         );
 
 
-        configurarReconhecimento();
+    document
+        .getElementById("saqueFora")
+        .classList.toggle(
+            "selecionado",
+            jogador === 2
+        );
+}
 
-        iniciarReconhecimento();
+
+
+/* =========================================================
+   INICIAR PARTIDA
+========================================================= */
+
+
+function iniciarPartida() {
+
+    if (!SpeechRecognition) {
+
+        alert(
+            "Seu navegador não possui reconhecimento de voz. " +
+            "Use o Google Chrome."
+        );
+
+        return;
     }
 
 
-    /*
-    ==========================================================
-    CONFIGURAR VOZ
-    ==========================================================
-    */
-
-    function configurarReconhecimento() {
-
-        recognition = new SpeechRecognition();
-
-        recognition.lang = "pt-BR";
-
-        /*
-        Queremos resultados parciais para conseguir acompanhar
-        o que está sendo reconhecido.
-        */
-
-        recognition.interimResults = true;
-
-        /*
-        false = recebemos frases completas.
-        */
-
-        recognition.continuous = true;
+    const casa =
+        document
+            .getElementById("nomeCasa")
+            .value
+            .trim();
 
 
-        recognition.onstart = function() {
+    const fora =
+        document
+            .getElementById("nomeFora")
+            .value
+            .trim();
 
-            reconhecendo = true;
 
-            const status =
+    estado.casa =
+        casa || "Casa";
+
+
+    estado.fora =
+        fora || "Fora";
+
+
+    estado.sacando =
+        saqueInicial;
+
+
+    partidaIniciada = true;
+
+
+    document
+        .getElementById("configuracao")
+        .classList.add("hidden");
+
+
+    document
+        .getElementById("partida")
+        .classList.remove("hidden");
+
+
+    atualizarInterface();
+
+
+    adicionarHistorico(
+        `Partida iniciada • Saque: ${nomeDoJogadorPorNumero(estado.sacando)}`
+    );
+
+
+    configurarReconhecimento();
+
+    iniciarReconhecimento();
+}
+
+
+
+/* =========================================================
+   CONFIGURAR RECONHECIMENTO
+========================================================= */
+
+
+function configurarReconhecimento() {
+
+    reconhecimento =
+        new SpeechRecognition();
+
+
+    reconhecimento.lang =
+        "pt-BR";
+
+
+    reconhecimento.continuous =
+        true;
+
+
+    reconhecimento.interimResults =
+        true;
+
+
+    reconhecimento.onstart =
+        function() {
+
+            ouvindo = true;
+
+
+            const elemento =
                 document.getElementById(
-                    "microphoneStatus"
+                    "statusMicrofone"
                 );
 
-            status.classList.add("active");
 
-            status.innerHTML =
-                '<span class="dot"></span> 🟢 ESCUTANDO';
+            elemento.classList.add(
+                "ouvindo"
+            );
+
+
+            elemento.innerHTML =
+                '<span class="bolinha"></span>' +
+                ' 🟢 ESCUTANDO';
         };
 
 
-        recognition.onend = function() {
 
-            reconhecendo = false;
+    reconhecimento.onend =
+        function() {
 
-            const status =
+            ouvindo = false;
+
+
+            const elemento =
                 document.getElementById(
-                    "microphoneStatus"
+                    "statusMicrofone"
                 );
 
-            status.classList.remove("active");
 
-            status.innerHTML =
-                "🔴 Reconhecimento interrompido";
+            elemento.classList.remove(
+                "ouvindo"
+            );
+
+
+            elemento.innerHTML =
+                "🔴 Reconhecimento reiniciando...";
 
 
             /*
-            Tenta iniciar novamente automaticamente.
+            O navegador pode encerrar a escuta.
+            Tentamos novamente.
             */
 
             if (
@@ -806,77 +1256,81 @@
                 !estado.partidaFinalizada
             ) {
 
-                setTimeout(() => {
-
-                    iniciarReconhecimento();
-
-                }, 500);
+                setTimeout(
+                    iniciarReconhecimento,
+                    500
+                );
             }
         };
 
 
-        recognition.onerror = function(event) {
+
+    reconhecimento.onerror =
+        function(evento) {
 
             console.log(
-                "Erro no reconhecimento:",
-                event.error
+                "Erro de voz:",
+                evento.error
             );
 
 
-            /*
-            Erros comuns como no-speech não encerram
-            a partida.
-            */
-
             if (
-                event.error === "not-allowed" ||
-                event.error === "service-not-allowed"
+                evento.error ===
+                "not-allowed"
             ) {
 
                 document
-                    .getElementById("microphoneStatus")
-                    .innerHTML =
-                    "⚠️ Permissão do microfone bloqueada.";
-
-                return;
+                    .getElementById(
+                        "statusMicrofone"
+                    )
+                    .textContent =
+                    "⚠️ Permissão do microfone negada.";
             }
         };
 
 
-        recognition.onresult = function(event) {
+
+    reconhecimento.onresult =
+        function(evento) {
 
             let fraseFinal = "";
 
 
             for (
-                let i = event.resultIndex;
-                i < event.results.length;
+                let i = evento.resultIndex;
+                i < evento.results.length;
                 i++
             ) {
 
                 const resultado =
-                    event.results[i];
+                    evento.results[i];
+
 
                 const texto =
-                    resultado[0].transcript.trim();
+                    resultado[0]
+                        .transcript
+                        .trim();
 
 
                 /*
-                Mostra o que está sendo ouvido.
+                Mostra imediatamente o que o celular
+                está entendendo.
                 */
 
                 document
-                    .getElementById("ultimoComando")
-                    .textContent = texto;
+                    .getElementById(
+                        "ultimoComando"
+                    )
+                    .textContent =
+                    texto;
 
 
-                /*
-                Só processamos resultado final.
-                */
+                if (
+                    resultado.isFinal
+                ) {
 
-                if (resultado.isFinal) {
-
-                    fraseFinal += " " + texto;
+                    fraseFinal +=
+                        " " + texto;
                 }
             }
 
@@ -887,662 +1341,831 @@
 
             if (fraseFinal) {
 
-                processarComando(fraseFinal);
+                processarComando(
+                    fraseFinal
+                );
             }
         };
+}
+
+
+
+/* =========================================================
+   INICIAR RECONHECIMENTO
+========================================================= */
+
+
+function iniciarReconhecimento() {
+
+    if (
+        !reconhecimento ||
+        ouvindo
+    ) {
+
+        return;
+    }
+
+
+    try {
+
+        reconhecimento.start();
+
+    } catch (erro) {
+
+        console.log(
+            "Não foi possível iniciar:",
+            erro
+        );
+    }
+}
+
+
+
+/* =========================================================
+   NORMALIZAR TEXTO
+========================================================= */
+
+
+function normalizar(texto) {
+
+    return texto
+        .toLowerCase()
+        .normalize("NFD")
+        .replace(
+            /[\u0300-\u036f]/g,
+            ""
+        )
+        .replace(
+            /[.,!?;:]/g,
+            " "
+        )
+        .replace(
+            /\s+/g,
+            " "
+        )
+        .trim();
+}
+
+
+
+/* =========================================================
+   NORMALIZAR NÚMEROS FALADOS
+========================================================= */
+
+
+function normalizarNumeros(texto) {
+
+    texto =
+        normalizar(texto);
+
+
+    /*
+    Primeiro expressões maiores.
+    */
+
+    texto =
+        texto.replace(
+            /\bquarenta e cinco\b/g,
+            "45"
+        );
+
+
+    /*
+    Quinze
+    */
+
+    texto =
+        texto.replace(
+            /\bquinze\b/g,
+            "15"
+        );
+
+
+    texto =
+        texto.replace(
+            /\bquize\b/g,
+            "15"
+        );
+
+
+    texto =
+        texto.replace(
+            /\bquinse\b/g,
+            "15"
+        );
+
+
+    texto =
+        texto.replace(
+            /\bquince\b/g,
+            "15"
+        );
+
+
+    /*
+    Trinta
+    */
+
+    texto =
+        texto.replace(
+            /\btrinta\b/g,
+            "30"
+        );
+
+
+    /*
+    Quarenta
+    */
+
+    texto =
+        texto.replace(
+            /\bquarenta\b/g,
+            "40"
+        );
+
+
+    /*
+    Zero
+    */
+
+    texto =
+        texto.replace(
+            /\bzero\b/g,
+            "0"
+        );
+
+
+    return texto;
+}
+
+
+
+/* =========================================================
+   CONVERTER UM NÚMERO
+========================================================= */
+
+
+function numeroValido(valor) {
+
+    const numero =
+        parseInt(
+            valor,
+            10
+        );
+
+
+    if (
+        numero === 0 ||
+        numero === 15 ||
+        numero === 30 ||
+        numero === 40
+    ) {
+
+        return numero;
+    }
+
+
+    return null;
+}
+
+
+
+/* =========================================================
+   IDENTIFICAR CASA OU FORA
+========================================================= */
+
+
+function identificarJogador(texto) {
+
+    texto =
+        normalizar(texto);
+
+
+    /*
+    Casa
+    */
+
+    if (
+        texto.includes("casa") ||
+        texto.includes("minha") ||
+        texto.includes("meu")
+    ) {
+
+        return "casa";
     }
 
 
     /*
-    ==========================================================
-    INICIAR RECONHECIMENTO
-    ==========================================================
+    Fora
     */
 
-    function iniciarReconhecimento() {
+    if (
+        texto.includes("fora") ||
+        texto.includes("adversario") ||
+        texto.includes("visitante")
+    ) {
 
-        if (!recognition || reconhecendo) {
-            return;
-        }
-
-        try {
-
-            recognition.start();
-
-        } catch (erro) {
-
-            console.log(
-                "Reconhecimento já estava iniciado."
-            );
-        }
+        return "fora";
     }
 
 
     /*
-    ==========================================================
-    NORMALIZAR TEXTO
-    ==========================================================
+    Nome da Casa
     */
 
-    function normalizar(texto) {
+    const nomeCasa =
+        normalizar(
+            estado.casa
+        );
 
-        return texto
-            .toLowerCase()
-            .normalize("NFD")
-            .replace(/[\u0300-\u036f]/g, "")
-            .replace(/[.,!?;:]/g, " ")
-            .replace(/\s+/g, " ")
-            .trim();
+
+    if (
+        nomeCasa &&
+        texto.includes(nomeCasa)
+    ) {
+
+        return "casa";
     }
 
 
     /*
-    ==========================================================
-    NÚMEROS FALADOS
-    ==========================================================
+    Nome do Fora
     */
 
-    function converterNumero(texto) {
-
-        const numeros = {
-
-            "zero": 0,
-
-            "quinze": 15,
-
-            "quize": 15,
-
-            "quinse": 15,
-
-            "trinta": 30,
-
-            "quarenta": 40,
-
-            "quarenta e cinco": 45,
-
-            "um": 1,
-            "uma": 1,
-
-            "dois": 2,
-            "duas": 2,
-
-            "tres": 3,
-
-            "quatro": 4,
-
-            "cinco": 5,
-
-            "seis": 6,
-
-            "sete": 7,
-
-            "oito": 8,
-
-            "nove": 9,
-
-            "dez": 10
-        };
+    const nomeFora =
+        normalizar(
+            estado.fora
+        );
 
 
-        if (
-            Object.prototype.hasOwnProperty.call(
-                numeros,
+    if (
+        nomeFora &&
+        texto.includes(nomeFora)
+    ) {
+
+        return "fora";
+    }
+
+
+    return null;
+}
+
+
+
+/* =========================================================
+   PROCESSAR COMANDO
+========================================================= */
+
+
+function processarComando(
+    fraseOriginal
+) {
+
+    if (
+        !partidaIniciada ||
+        estado.partidaFinalizada
+    ) {
+
+        return;
+    }
+
+
+    let texto =
+        normalizar(
+            fraseOriginal
+        );
+
+
+    document
+        .getElementById(
+            "ultimoComando"
+        )
+        .textContent =
+        fraseOriginal;
+
+
+
+    /* ==============================================
+       DESFAZER
+    ============================================== */
+
+    if (
+        texto.includes("desfaz") ||
+        texto.includes("desfazer") ||
+        texto.includes("corrige") ||
+        texto.includes("corrigir") ||
+        texto.includes("volta um")
+    ) {
+
+        desfazer();
+
+        return;
+    }
+
+
+
+    /* ==============================================
+       GAME
+    ============================================== */
+
+    /*
+    "game casa"
+    "game fora"
+    "casa game"
+    "game para casa"
+    */
+
+    if (
+        texto.includes("game")
+    ) {
+
+        const jogador =
+            identificarJogador(
                 texto
-            )
-        ) {
-
-            return numeros[texto];
-        }
+            );
 
 
-        const numero =
-            parseInt(texto, 10);
+        if (jogador) {
 
-
-        if (!isNaN(numero)) {
-
-            return numero;
-        }
-
-
-        return null;
-    }
-
-
-    /*
-    ==========================================================
-    CONVERTER PALAVRAS DE PONTUAÇÃO
-    ==========================================================
-    */
-
-    function normalizarNumeroFalado(texto) {
-
-        texto = normalizar(texto);
-
-
-        const mapa = {
-
-            "zero": "0",
-
-            "quinze": "15",
-            "quize": "15",
-            "quinse": "15",
-
-            "trinta": "30",
-
-            "quarenta": "40",
-
-            "quarenta e cinco": "45"
-        };
-
-
-        for (const palavra in mapa) {
-
-            texto =
-                texto.replace(
-                    new RegExp(
-                        "\\b" +
-                        palavra +
-                        "\\b",
-                        "g"
-                    ),
-                    mapa[palavra]
-                );
-        }
-
-
-        return texto;
-    }
-
-
-    /*
-    ==========================================================
-    IDENTIFICAR JOGADOR
-    ==========================================================
-    */
-
-    function identificarJogador(texto) {
-
-        texto = normalizar(texto);
-
-
-        /*
-        CASA
-        */
-
-        if (
-            texto.includes("casa") ||
-            texto.includes("minha") ||
-            texto.includes("meu") ||
-            texto.includes("home")
-        ) {
-
-            return "casa";
-        }
-
-
-        /*
-        FORA
-        */
-
-        if (
-            texto.includes("fora") ||
-            texto.includes("adversario") ||
-            texto.includes("adversária") ||
-            texto.includes("visitante") ||
-            texto.includes("away")
-        ) {
-
-            return "fora";
-        }
-
-
-        /*
-        Nome real da Casa
-        */
-
-        const nomeCasa =
-            normalizar(estado.casa);
-
-        if (
-            nomeCasa &&
-            texto.includes(nomeCasa)
-        ) {
-
-            return "casa";
-        }
-
-
-        /*
-        Nome real do Fora
-        */
-
-        const nomeFora =
-            normalizar(estado.fora);
-
-        if (
-            nomeFora &&
-            texto.includes(nomeFora)
-        ) {
-
-            return "fora";
-        }
-
-
-        return null;
-    }
-
-
-    /*
-    ==========================================================
-    PROCESSAR COMANDO
-    ==========================================================
-    */
-
-    function processarComando(fraseOriginal) {
-
-        if (
-            !partidaIniciada ||
-            estado.partidaFinalizada
-        ) {
+            ganharGame(
+                jogador
+            );
 
             return;
         }
+    }
 
 
-        let texto =
-            normalizar(fraseOriginal);
+
+    /* ==============================================
+       VANTAGEM
+    ============================================== */
+
+    if (
+        texto.includes("vantagem")
+    ) {
+
+        const jogador =
+            identificarJogador(
+                texto
+            );
 
 
-        document
-            .getElementById("ultimoComando")
-            .textContent =
-            fraseOriginal;
-
-
-        /*
-        ======================================================
-        DESFAZER
-        ======================================================
-        */
-
-        if (
-            texto.includes("desfaz") ||
-            texto.includes("desfazer") ||
-            texto.includes("corrige") ||
-            texto.includes("corrigir") ||
-            texto.includes("volta um")
-        ) {
-
-            desfazerPorVoz();
-
-            return;
-        }
-
-
-        /*
-        ======================================================
-        DEUCE
-        ======================================================
-        */
-
-        if (
-            texto === "deuce" ||
-            texto.includes("iguais") ||
-            texto.includes("40 iguais") ||
-            texto.includes("quarenta iguais")
-        ) {
+        if (jogador) {
 
             salvarEstado();
 
-            estado.pontos.casa = 40;
-            estado.pontos.fora = 40;
-            estado.vantagem = null;
 
-            registrarAcao("Placar ajustado para Deuce");
+            estado.pontos.casa =
+                40;
+
+
+            estado.pontos.fora =
+                40;
+
+
+            estado.vantagem =
+                jogador;
+
+
+            registrarAcao(
+                "Vantagem " +
+                nomeDoJogador(
+                    jogador
+                )
+            );
+
 
             atualizarInterface();
 
             return;
         }
+    }
 
 
-        /*
-        ======================================================
-        VANTAGEM
-        ======================================================
-        */
 
-        if (
-            texto.includes("vantagem")
-        ) {
+    /* ==============================================
+       DEUCE
+    ============================================== */
 
-            const jogador =
-                identificarJogador(texto);
-
-
-            if (jogador) {
-
-                salvarEstado();
-
-                estado.pontos.casa = 40;
-                estado.pontos.fora = 40;
-
-                estado.vantagem = jogador;
-
-                registrarAcao(
-                    `Vantagem ${nomeJogadorTexto(jogador)}`
-                );
-
-                atualizarInterface();
-
-                return;
-            }
-        }
-
+    if (
+        texto.includes("deuce") ||
+        texto.includes("iguais")
+    ) {
 
         /*
-        ======================================================
-        GAME DECLARADO
-        ======================================================
+        Se houver número antes de "iguais",
+        trataremos abaixo como placar.
+
+        Exemplos:
+
+        "15 iguais"
+        "30 iguais"
+        "40 iguais"
         */
 
-        if (
-            texto.includes("game")
-        ) {
-
-            const jogador =
-                identificarJogador(texto);
+        const resultado =
+            processarPlacarFalado(
+                texto
+            );
 
 
-            if (jogador) {
-
-                ganharGame(jogador);
-
-                return;
-            }
-        }
-
-
-        /*
-        ======================================================
-        PLACAR FALADO
-        ======================================================
-        */
-
-        if (
-            processarPlacarFalado(texto)
-        ) {
+        if (resultado) {
 
             return;
         }
 
 
         /*
-        ======================================================
-        PONTO
-        ======================================================
+        "iguais" sozinho = 40 × 40
         */
-
-        if (
-            texto.includes("ponto") ||
-            texto.includes("ponto para") ||
-            texto.includes("ponto de")
-        ) {
-
-            const jogador =
-                identificarJogador(texto);
-
-
-            if (jogador) {
-
-                adicionarPonto(jogador);
-
-                return;
-            }
-        }
-
-
-        /*
-        ======================================================
-        COMANDO DIRETO
-        ======================================================
-
-        Exemplos:
-
-        "casa ganhou"
-        "fora ganhou"
-        "casa venceu o ponto"
-        */
-
-        if (
-            texto.includes("ganhou") ||
-            texto.includes("venceu")
-        ) {
-
-            const jogador =
-                identificarJogador(texto);
-
-
-            if (jogador) {
-
-                adicionarPonto(jogador);
-
-                return;
-            }
-        }
-
-
-        /*
-        Se chegou aqui, não entendeu.
-        */
-
-        registrarAcao(
-            "Não entendi o comando. Placar não alterado."
-        );
-    }
-
-
-    /*
-    ==========================================================
-    PROCESSAR "15 A 30"
-    ==========================================================
-    */
-
-    function processarPlacarFalado(textoOriginal) {
-
-        let texto =
-            normalizarNumeroFalado(textoOriginal);
-
-
-        /*
-        Remove palavras que podem aparecer entre os números.
-        */
-
-        texto =
-            texto
-                .replace(/\ba\b/g, " ")
-                .replace(/\bpara\b/g, " ")
-                .replace(/\bx\b/g, " ")
-                .replace(/\bpor\b/g, " ")
-                .replace(/\bde\b/g, " ")
-                .replace(/\s+/g, " ")
-                .trim();
-
-
-        const partes =
-            texto.split(" ");
-
-
-        if (partes.length < 2) {
-            return false;
-        }
-
-
-        const numeros = [];
-
-
-        for (const parte of partes) {
-
-            const numero =
-                converterNumero(parte);
-
-
-            if (
-                numero !== null &&
-                (
-                    numero === 0 ||
-                    numero === 15 ||
-                    numero === 30 ||
-                    numero === 40 ||
-                    numero === 1 ||
-                    numero === 2 ||
-                    numero === 3 ||
-                    numero === 4 ||
-                    numero === 5 ||
-                    numero === 6 ||
-                    numero === 7
-                )
-            ) {
-
-                numeros.push(numero);
-            }
-        }
-
-
-        if (numeros.length !== 2) {
-            return false;
-        }
-
-
-        const p1 = numeros[0];
-        const p2 = numeros[1];
-
-
-        /*
-        Não usamos "0 x 0" para decidir vencedor.
-        */
-
-        if (
-            p1 === 0 &&
-            p2 === 0
-        ) {
-
-            registrarAcao(
-                "0 × 0 reconhecido. Nenhum ponto alterado."
-            );
-
-            return true;
-        }
-
 
         salvarEstado();
 
 
-        estado.pontos.casa = p1;
-        estado.pontos.fora = p2;
+        estado.pontos.casa =
+            40;
 
 
-        if (
-            p1 === 40 &&
-            p2 === 40
-        ) {
+        estado.pontos.fora =
+            40;
 
-            estado.vantagem = null;
 
-        } else {
-
-            estado.vantagem = null;
-        }
+        estado.vantagem =
+            null;
 
 
         registrarAcao(
-            `Placar definido: ${p1} × ${p2}`
+            "40 × 40 — Deuce"
         );
 
 
         atualizarInterface();
+
+        return;
+    }
+
+
+
+    /* ==============================================
+       PLACAR DIRETO
+    ============================================== */
+
+    if (
+        processarPlacarFalado(
+            texto
+        )
+    ) {
+
+        return;
+    }
+
+
+
+    /* ==============================================
+       PONTO
+    ============================================== */
+
+    if (
+        texto.includes("ponto") ||
+        texto.includes("ganhou o ponto") ||
+        texto.includes("venceu o ponto")
+    ) {
+
+        const jogador =
+            identificarJogador(
+                texto
+            );
+
+
+        if (jogador) {
+
+            adicionarPonto(
+                jogador
+            );
+
+            return;
+        }
+    }
+
+
+
+    /* ==============================================
+       "CASA GANHOU"
+       "FORA GANHOU"
+    ============================================== */
+
+    if (
+        texto.includes("ganhou") ||
+        texto.includes("venceu")
+    ) {
+
+        const jogador =
+            identificarJogador(
+                texto
+            );
+
+
+        if (jogador) {
+
+            adicionarPonto(
+                jogador
+            );
+
+            return;
+        }
+    }
+
+
+
+    registrarAcao(
+        "Não entendi. Placar não alterado."
+    );
+}
+
+
+
+/* =========================================================
+   INTERPRETAR PLACAR
+
+   Exemplos:
+
+   15 30
+   15 a 30
+   15h30
+   15:30
+   quinze a trinta
+   15 iguais
+   trinta iguais
+========================================================= */
+
+
+function processarPlacarFalado(
+    textoOriginal
+) {
+
+    let texto =
+        normalizarNumeros(
+            textoOriginal
+        );
+
+
+    /*
+    ==============================================
+    CORREÇÃO DO "15H30"
+    ==============================================
+    */
+
+    texto =
+        texto.replace(
+            /(\d+)\s*h\s*(\d+)/g,
+            "$1 $2"
+        );
+
+
+    /*
+    "15 horas 30"
+    */
+
+    texto =
+        texto.replace(
+            /(\d+)\s*horas?\s*(?:e\s*)?(\d+)/g,
+            "$1 $2"
+        );
+
+
+    /*
+    "15:30"
+    */
+
+    texto =
+        texto.replace(
+            /(\d+)\s*:\s*(\d+)/g,
+            "$1 $2"
+        );
+
+
+    /*
+    ==============================================
+    "15 IGUAIS"
+    ==============================================
+    */
+
+    texto =
+        texto.replace(
+            /\b(0|15|30|40)\s+iguais\b/g,
+            "$1 $1"
+        );
+
+
+    /*
+    ==============================================
+    REMOVE PALAVRAS ENTRE OS NÚMEROS
+    ==============================================
+    */
+
+    texto =
+        texto
+            .replace(
+                /\ba\b/g,
+                " "
+            )
+            .replace(
+                /\bpara\b/g,
+                " "
+            )
+            .replace(
+                /\bx\b/g,
+                " "
+            )
+            .replace(
+                /\bpor\b/g,
+                " "
+            )
+            .replace(
+                /\bde\b/g,
+                " "
+            )
+            .replace(
+                /\s+/g,
+                " "
+            )
+            .trim();
+
+
+    /*
+    ==============================================
+    EXTRAI OS NÚMEROS
+    ==============================================
+    */
+
+    const partes =
+        texto.split(" ");
+
+
+    const numeros = [];
+
+
+    for (
+        const parte of partes
+    ) {
+
+        const numero =
+            numeroValido(
+                parte
+            );
+
+
+        if (
+            numero !== null
+        ) {
+
+            numeros.push(
+                numero
+            );
+        }
+    }
+
+
+    /*
+    Precisamos de exatamente dois.
+    */
+
+    if (
+        numeros.length !== 2
+    ) {
+
+        return false;
+    }
+
+
+    const casa =
+        numeros[0];
+
+
+    const fora =
+        numeros[1];
+
+
+    /*
+    ==============================================
+    0 × 0
+    ==============================================
+    */
+
+    if (
+        casa === 0 &&
+        fora === 0
+    ) {
+
+        registrarAcao(
+            "0 × 0 reconhecido. Nenhum game alterado."
+        );
 
         return true;
     }
 
 
     /*
-    ==========================================================
-    ADICIONAR PONTO
-    ==========================================================
+    ==============================================
+    SALVA ESTADO
+    ==============================================
     */
 
-    function adicionarPonto(jogador) {
-
-        salvarEstado();
+    salvarEstado();
 
 
-        const outro =
-            jogador === "casa"
-                ? "fora"
-                : "casa";
+    estado.pontos.casa =
+        casa;
+
+
+    estado.pontos.fora =
+        fora;
+
+
+    estado.vantagem =
+        null;
+
+
+    /*
+    ==============================================
+    DEUCE
+    ==============================================
+    */
+
+    if (
+        casa === 40 &&
+        fora === 40
+    ) {
+
+        registrarAcao(
+            "40 × 40 — Deuce"
+        );
+
+    } else {
+
+        registrarAcao(
+            `Placar definido: ${casa} × ${fora}`
+        );
+    }
+
+
+    atualizarInterface();
+
+
+    return true;
+}
+
+
+
+/* =========================================================
+   ADICIONAR PONTO
+========================================================= */
+
+
+function adicionarPonto(
+    jogador
+) {
+
+    salvarEstado();
+
+
+    const adversario =
+        jogador === "casa"
+            ? "fora"
+            : "casa";
+
+
+    /*
+    ==============================================
+    DEUCE
+    ==============================================
+    */
+
+    if (
+        estado.pontos.casa === 40 &&
+        estado.pontos.fora === 40
+    ) {
 
 
         /*
-        ======================================================
-        DEUCE
-        ======================================================
+        Nenhuma vantagem.
         */
 
         if (
-            estado.pontos.casa >= 40 &&
-            estado.pontos.fora >= 40
+            estado.vantagem === null
         ) {
 
-            /*
-            Sem vantagem:
-            jogador ganha vantagem.
-            */
-
-            if (
-                estado.vantagem === null
-            ) {
-
-                estado.vantagem = jogador;
-
-                registrarAcao(
-                    `Vantagem ${nomeJogadorTexto(jogador)}`
-                );
-
-                atualizarInterface();
-
-                return;
-            }
+            estado.vantagem =
+                jogador;
 
 
-            /*
-            Jogador já tinha vantagem:
-            ganhou o game.
-            */
-
-            if (
-                estado.vantagem === jogador
-            ) {
-
-                ganharGame(jogador);
-
-                return;
-            }
-
-
-            /*
-            Adversário tinha vantagem:
-            volta para Deuce.
-            */
-
-            estado.vantagem = null;
-
-            estado.pontos.casa = 40;
-            estado.pontos.fora = 40;
-
-
-            registrarAcao("Deuce");
+            registrarAcao(
+                "Vantagem " +
+                nomeDoJogador(
+                    jogador
+                )
+            );
 
 
             atualizarInterface();
@@ -1552,599 +2175,996 @@
 
 
         /*
-        ======================================================
-        PONTUAÇÃO NORMAL
-        ======================================================
-        */
-
-        const atual =
-            estado.pontos[jogador];
-
-
-        if (atual === 0) {
-
-            estado.pontos[jogador] = 15;
-
-        } else if (atual === 15) {
-
-            estado.pontos[jogador] = 30;
-
-        } else if (atual === 30) {
-
-            /*
-            Se adversário ainda está abaixo de 40,
-            vai para 40.
-            */
-
-            estado.pontos[jogador] = 40;
-
-        } else if (atual === 40) {
-
-            const outroPonto =
-                estado.pontos[outro];
-
-
-            /*
-            40 contra menos de 40:
-            ganhou o game.
-            */
-
-            if (
-                outroPonto < 40
-            ) {
-
-                ganharGame(jogador);
-
-                return;
-            }
-        }
-
-
-        /*
-        Segurança adicional:
+        Jogador com vantagem
+        ganha o game.
         */
 
         if (
-            estado.pontos[jogador] === 40 &&
-            estado.pontos[outro] < 40
+            estado.vantagem === jogador
         ) {
 
-            /*
-            Ainda não ganhou.
-            */
-
-        }
-
-
-        registrarAcao(
-            `${nomeJogadorTexto(jogador)} ganhou o ponto`
-        );
-
-
-        atualizarInterface();
-    }
-
-
-    /*
-    ==========================================================
-    GANHAR GAME
-    ==========================================================
-    */
-
-    function ganharGame(jogador) {
-
-        salvarEstado();
-
-
-        estado.games[jogador]++;
-
-
-        registrarAcao(
-            `🎾 GAME ${nomeJogadorTexto(jogador)}`
-        );
-
-
-        /*
-        Próximo game começa 0 × 0.
-        */
-
-        estado.pontos.casa = 0;
-        estado.pontos.fora = 0;
-
-        estado.vantagem = null;
-
-
-        /*
-        Alternância de saque.
-
-        Regra simplificada:
-        troca o sacador a cada game.
-        */
-
-        estado.sacando =
-            estado.sacando === 1
-                ? 2
-                : 1;
-
-
-        verificarSet(jogador);
-
-        atualizarInterface();
-    }
-
-
-    /*
-    ==========================================================
-    VERIFICAR SET
-    ==========================================================
-    */
-
-    function verificarSet(jogador) {
-
-        const outro =
-            jogador === "casa"
-                ? "fora"
-                : "casa";
-
-
-        const meusGames =
-            estado.games[jogador];
-
-        const outrosGames =
-            estado.games[outro];
-
-
-        /*
-        6 games com diferença de 2.
-        */
-
-        if (
-            meusGames >= 6 &&
-            meusGames - outrosGames >= 2
-        ) {
-
-            ganharSet(jogador);
-
-            return;
-        }
-
-
-        /*
-        7 games contra 5 também fecha.
-        */
-
-        if (
-            meusGames === 7 &&
-            outrosGames <= 5
-        ) {
-
-            ganharSet(jogador);
-
-            return;
-        }
-
-
-        /*
-        6 × 6:
-        Aqui deixamos registrado como tie-break.
-
-        Para uma versão profissional podemos adicionar
-        o placar específico do tie-break.
-        */
-
-        if (
-            meusGames === 6 &&
-            outrosGames === 6
-        ) {
-
-            registrarAcao(
-                "⚡ 6 × 6 — Tie-break"
+            ganharGame(
+                jogador
             );
-        }
-    }
-
-
-    /*
-    ==========================================================
-    GANHAR SET
-    ==========================================================
-    */
-
-    function ganharSet(jogador) {
-
-        const numero =
-            estado.setAtual;
-
-
-        estado.placarSets.push({
-
-            casa: estado.games.casa,
-
-            fora: estado.games.fora
-
-        });
-
-
-        estado.sets[jogador]++;
-
-
-        registrarAcao(
-            `🏆 ${nomeJogadorTexto(jogador)} ganhou o ${numero}º set`
-        );
-
-
-        /*
-        Melhor de 3:
-        dois sets vencidos = partida ganha.
-        */
-
-        if (
-            estado.sets[jogador] >= 2
-        ) {
-
-            finalizarPartida(jogador);
 
             return;
         }
 
 
         /*
-        Próximo set.
+        Adversário tira a vantagem.
         */
 
-        estado.setAtual++;
+        estado.vantagem =
+            null;
 
-        estado.games.casa = 0;
-        estado.games.fora = 0;
 
-        estado.pontos.casa = 0;
-        estado.pontos.fora = 0;
-
-        estado.vantagem = null;
+        registrarAcao(
+            "Deuce"
+        );
 
 
         atualizarInterface();
+
+        return;
+    }
+
+
+
+    /*
+    ==============================================
+    PONTUAÇÃO NORMAL
+    ==============================================
+    */
+
+    if (
+        estado.pontos[jogador] === 0
+    ) {
+
+        estado.pontos[jogador] =
+            15;
+
+    }
+
+    else if (
+        estado.pontos[jogador] === 15
+    ) {
+
+        estado.pontos[jogador] =
+            30;
+
+    }
+
+    else if (
+        estado.pontos[jogador] === 30
+    ) {
+
+        estado.pontos[jogador] =
+            40;
+
+    }
+
+    else if (
+        estado.pontos[jogador] === 40
+    ) {
+
+        /*
+        40 contra menos de 40:
+        game.
+        */
+
+        if (
+            estado.pontos[adversario] < 40
+        ) {
+
+            ganharGame(
+                jogador
+            );
+
+            return;
+        }
+    }
+
+
+    registrarAcao(
+        nomeDoJogador(
+            jogador
+        ) +
+        " ganhou o ponto"
+    );
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   GANHAR GAME
+========================================================= */
+
+
+function ganharGame(
+    jogador
+) {
+
+    salvarEstado();
+
+
+    /*
+    Se estiver em tie-break,
+    usa lógica diferente.
+    */
+
+    if (
+        estado.tieBreak
+    ) {
+
+        ganharPontoTieBreak(
+            jogador
+        );
+
+        return;
     }
 
 
     /*
-    ==========================================================
-    FINALIZAR PARTIDA
-    ==========================================================
+    ==============================================
+    GAME NORMAL
+    ==============================================
     */
 
-    function finalizarPartida(jogador) {
+    estado.games[jogador]++;
 
-        estado.partidaFinalizada = true;
+
+    registrarAcao(
+        "🎾 GAME " +
+        nomeDoJogador(
+            jogador
+        )
+    );
+
+
+    /*
+    Novo game começa 0 × 0.
+    */
+
+    estado.pontos.casa =
+        0;
+
+
+    estado.pontos.fora =
+        0;
+
+
+    estado.vantagem =
+        null;
+
+
+    /*
+    Troca saque.
+    */
+
+    estado.sacando =
+        estado.sacando === 1
+            ? 2
+            : 1;
+
+
+    verificarSet();
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   VERIFICAR SET
+========================================================= */
+
+
+function verificarSet() {
+
+    const casa =
+        estado.games.casa;
+
+
+    const fora =
+        estado.games.fora;
+
+
+    /*
+    ==============================================
+    6 × 6
+    ==============================================
+    */
+
+    if (
+        casa === 6 &&
+        fora === 6
+    ) {
+
+        estado.tieBreak =
+            true;
+
+
+        estado.tieBreakPontos.casa =
+            0;
+
+
+        estado.tieBreakPontos.fora =
+            0;
 
 
         registrarAcao(
-            `🏆 ${nomeJogadorTexto(jogador)} VENCEU A PARTIDA`
+            "⚡ TIE-BREAK — 6 × 6"
         );
 
 
-        const status =
-            document.getElementById("gameStatus");
+        return;
+    }
 
+
+    /*
+    ==============================================
+    CASA GANHA SET
+    ==============================================
+    */
+
+    if (
+        casa >= 6 &&
+        casa - fora >= 2
+    ) {
+
+        ganharSet(
+            "casa"
+        );
+
+        return;
+    }
+
+
+    /*
+    ==============================================
+    FORA GANHA SET
+    ==============================================
+    */
+
+    if (
+        fora >= 6 &&
+        fora - casa >= 2
+    ) {
+
+        ganharSet(
+            "fora"
+        );
+
+        return;
+    }
+}
+
+
+
+/* =========================================================
+   TIE-BREAK
+========================================================= */
+
+
+function ganharPontoTieBreak(
+    jogador
+) {
+
+    /*
+    Aqui não usamos 15/30/40.
+
+    Tie-break:
+
+    1, 2, 3, 4...
+
+    */
+
+    estado.tieBreakPontos[jogador]++;
+
+
+    const casa =
+        estado.tieBreakPontos.casa;
+
+
+    const fora =
+        estado.tieBreakPontos.fora;
+
+
+    registrarAcao(
+        `Tie-break: ${casa} × ${fora}`
+    );
+
+
+    /*
+    Vitória no tie-break:
+
+    pelo menos 7
+    e diferença de 2.
+    */
+
+    if (
+        casa >= 7 &&
+        casa - fora >= 2
+    ) {
+
+        finalizarTieBreak(
+            "casa"
+        );
+
+        return;
+    }
+
+
+    if (
+        fora >= 7 &&
+        fora - casa >= 2
+    ) {
+
+        finalizarTieBreak(
+            "fora"
+        );
+
+        return;
+    }
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   FINALIZAR TIE-BREAK
+========================================================= */
+
+
+function finalizarTieBreak(
+    jogador
+) {
+
+    /*
+    Quem ganha o tie-break
+    ganha o set por 7 × 6.
+    */
+
+    estado.games.casa = 6;
+
+    estado.games.fora = 6;
+
+
+    if (
+        jogador === "casa"
+    ) {
+
+        estado.games.casa =
+            7;
+
+    } else {
+
+        estado.games.fora =
+            7;
+    }
+
+
+    registrarAcao(
+        "🏆 " +
+        nomeDoJogador(jogador) +
+        " ganhou o tie-break"
+    );
+
+
+    ganharSet(
+        jogador
+    );
+}
+
+
+
+/* =========================================================
+   GANHAR SET
+========================================================= */
+
+
+function ganharSet(
+    jogador
+) {
+
+    /*
+    Guarda o placar.
+    */
+
+    estado.placarSets.push({
+
+        casa:
+            estado.games.casa,
+
+        fora:
+            estado.games.fora
+    });
+
+
+    estado.sets[jogador]++;
+
+
+    registrarAcao(
+        "🏆 " +
+        nomeDoJogador(jogador) +
+        " ganhou o " +
+        estado.setAtual +
+        "º set"
+    );
+
+
+    /*
+    ==============================================
+    MELHOR DE 3
+    ==============================================
+    */
+
+    if (
+        estado.sets[jogador] >= 2
+    ) {
+
+        finalizarPartida(
+            jogador
+        );
+
+        return;
+    }
+
+
+    /*
+    ==============================================
+    NOVO SET
+    ==============================================
+    */
+
+    estado.setAtual++;
+
+
+    estado.games.casa =
+        0;
+
+
+    estado.games.fora =
+        0;
+
+
+    estado.pontos.casa =
+        0;
+
+
+    estado.pontos.fora =
+        0;
+
+
+    estado.vantagem =
+        null;
+
+
+    estado.tieBreak =
+        false;
+
+
+    estado.tieBreakPontos.casa =
+        0;
+
+
+    estado.tieBreakPontos.fora =
+        0;
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   FINALIZAR PARTIDA
+========================================================= */
+
+
+function finalizarPartida(
+    jogador
+) {
+
+    estado.partidaFinalizada =
+        true;
+
+
+    const nome =
+        nomeDoJogador(
+            jogador
+        );
+
+
+    registrarAcao(
+        "🏆 " +
+        nome +
+        " VENCEU A PARTIDA!"
+    );
+
+
+    const status =
+        document.getElementById(
+            "statusJogo"
+        );
+
+
+    status.classList.add(
+        "vencedor"
+    );
+
+
+    status.textContent =
+        "🏆 " +
+        nome +
+        " venceu a partida!";
+
+
+    /*
+    Para o reconhecimento.
+    */
+
+    if (
+        reconhecimento
+    ) {
+
+        try {
+
+            reconhecimento.stop();
+
+        } catch (e) {}
+    }
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   SALVAR ESTADO
+========================================================= */
+
+
+function salvarEstado() {
+
+    estadosAnteriores.push(
+
+        JSON.parse(
+            JSON.stringify(
+                estado
+            )
+        )
+    );
+
+
+    /*
+    Máximo de 100 estados.
+    */
+
+    if (
+        estadosAnteriores.length > 100
+    ) {
+
+        estadosAnteriores.shift();
+    }
+}
+
+
+
+/* =========================================================
+   DESFAZER
+========================================================= */
+
+
+function desfazer() {
+
+    if (
+        estadosAnteriores.length === 0
+    ) {
+
+        registrarAcao(
+            "Não existe nenhuma ação para desfazer."
+        );
+
+        return;
+    }
+
+
+    estado =
+        estadosAnteriores.pop();
+
+
+    registrarAcao(
+        "↩ Última ação desfeita."
+    );
+
+
+    atualizarInterface();
+}
+
+
+
+/* =========================================================
+   NOMES
+========================================================= */
+
+
+function nomeDoJogador(
+    jogador
+) {
+
+    if (
+        jogador === "casa"
+    ) {
+
+        return estado.casa;
+    }
+
+
+    return estado.fora;
+}
+
+
+function nomeDoJogadorPorNumero(
+    numero
+) {
+
+    if (
+        numero === 1
+    ) {
+
+        return estado.casa;
+    }
+
+
+    return estado.fora;
+}
+
+
+
+/* =========================================================
+   PONTUAÇÃO VISUAL
+========================================================= */
+
+
+function mostrarPontos(
+    jogador
+) {
+
+    /*
+    Tie-break mostra números.
+    */
+
+    if (
+        estado.tieBreak
+    ) {
+
+        return
+            estado.tieBreakPontos[
+                jogador
+            ];
+    }
+
+
+    /*
+    Deuce / vantagem.
+    */
+
+    if (
+        estado.pontos.casa >= 40 &&
+        estado.pontos.fora >= 40
+    ) {
+
+        if (
+            estado.vantagem === jogador
+        ) {
+
+            return "V";
+        }
+
+
+        return "40";
+    }
+
+
+    return estado.pontos[
+        jogador
+    ];
+}
+
+
+
+/* =========================================================
+   ATUALIZAR INTERFACE
+========================================================= */
+
+
+function atualizarInterface() {
+
+    /*
+    Nomes
+    */
+
+    document
+        .getElementById("tabelaCasa")
+        .textContent =
+        estado.casa;
+
+
+    document
+        .getElementById("tabelaFora")
+        .textContent =
+        estado.fora;
+
+
+    document
+        .getElementById("nomePlacarCasa")
+        .textContent =
+        estado.casa;
+
+
+    document
+        .getElementById("nomePlacarFora")
+        .textContent =
+        estado.fora;
+
+
+
+    /*
+    Pontos
+    */
+
+    document
+        .getElementById("pontosCasa")
+        .textContent =
+        mostrarPontos("casa");
+
+
+    document
+        .getElementById("pontosFora")
+        .textContent =
+        mostrarPontos("fora");
+
+
+
+    /*
+    Sets
+    */
+
+    document
+        .getElementById("setsCasa")
+        .textContent =
+        estado.sets.casa;
+
+
+    document
+        .getElementById("setsFora")
+        .textContent =
+        estado.sets.fora;
+
+
+
+    /*
+    Placar dos sets.
+    */
+
+    for (
+        let i = 1;
+        i <= 3;
+        i++
+    ) {
+
+        const set =
+            estado.placarSets[
+                i - 1
+            ];
+
+
+        document
+            .getElementById(
+                "set" +
+                i +
+                "Casa"
+            )
+            .textContent =
+            set
+                ? set.casa
+                : "-";
+
+
+        document
+            .getElementById(
+                "set" +
+                i +
+                "Fora"
+            )
+            .textContent =
+            set
+                ? set.fora
+                : "-";
+    }
+
+
+
+    /*
+    Informação do set.
+    */
+
+    if (
+        estado.tieBreak
+    ) {
+
+        document
+            .getElementById(
+                "informacaoSet"
+            )
+            .textContent =
+            estado.setAtual +
+            "º SET • TIE-BREAK";
+
+    } else {
+
+        document
+            .getElementById(
+                "informacaoSet"
+            )
+            .textContent =
+            estado.setAtual +
+            "º SET • " +
+            estado.games.casa +
+            " × " +
+            estado.games.fora +
+            " GAMES";
+    }
+
+
+
+    /*
+    Destaque de vantagem.
+    */
+
+    document
+        .getElementById("cardCasa")
+        .classList.toggle(
+            "vantagem",
+            estado.vantagem === "casa"
+        );
+
+
+    document
+        .getElementById("cardFora")
+        .classList.toggle(
+            "vantagem",
+            estado.vantagem === "fora"
+        );
+
+
+
+    /*
+    Status.
+    */
+
+    if (
+        estado.partidaFinalizada
+    ) {
+
+        return;
+    }
+
+
+    const status =
+        document.getElementById(
+            "statusJogo"
+        );
+
+
+    status.classList.remove(
+        "vencedor"
+    );
+
+
+    if (
+        estado.tieBreak
+    ) {
 
         status.textContent =
-            `🏆 ${nomeJogadorTexto(jogador)} venceu a partida!`;
+            "⚡ Tie-break";
 
-        status.style.background =
-            "#dcfce7";
-
-        status.style.color =
-            "#166534";
-
-
-        if (recognition) {
-
-            try {
-                recognition.stop();
-            } catch (e) {}
-        }
-
-
-        atualizarInterface();
+        return;
     }
 
 
-    /*
-    ==========================================================
-    DESFAZER
-    ==========================================================
-    */
+    if (
+        estado.vantagem === "casa"
+    ) {
 
-    function salvarEstado() {
+        status.textContent =
+            "Vantagem " +
+            estado.casa;
 
-        /*
-        Evita acumular cópias infinitas.
-        */
+        return;
+    }
 
-        historicoEstados.push(
-            JSON.parse(
-                JSON.stringify(estado)
-            )
+
+    if (
+        estado.vantagem === "fora"
+    ) {
+
+        status.textContent =
+            "Vantagem " +
+            estado.fora;
+
+        return;
+    }
+
+
+    if (
+        estado.pontos.casa === 40 &&
+        estado.pontos.fora === 40
+    ) {
+
+        status.textContent =
+            "40 × 40 — DEUCE";
+
+        return;
+    }
+
+
+    status.textContent =
+        "🎙️ Saque: " +
+        nomeDoJogadorPorNumero(
+            estado.sacando
+        );
+}
+
+
+
+/* =========================================================
+   HISTÓRICO
+========================================================= */
+
+
+function adicionarHistorico(
+    texto
+) {
+
+    const historico =
+        document.getElementById(
+            "historico"
         );
 
 
-        if (
-            historicoEstados.length > 100
-        ) {
+    if (
+        historico.textContent ===
+        "Nenhum evento ainda."
+    ) {
 
-            historicoEstados.shift();
-        }
+        historico.innerHTML =
+            "";
     }
 
 
-    function desfazerPorVoz() {
-
-        if (
-            historicoEstados.length === 0
-        ) {
-
-            registrarAcao(
-                "Não há nada para desfazer."
-            );
-
-            return;
-        }
-
-
-        estado =
-            historicoEstados.pop();
-
-
-        registrarAcao(
-            "↩ Última ação desfeita."
+    const item =
+        document.createElement(
+            "div"
         );
 
 
-        atualizarInterface();
-    }
+    item.className =
+        "evento";
 
 
-    /*
-    ==========================================================
-    NOMES
-    ==========================================================
-    */
-
-    function nomeJogador(jogador) {
-
-        return jogador === 1
-            ? estado.casa
-            : estado.fora;
-    }
-
-
-    function nomeJogadorTexto(jogador) {
-
-        return jogador === "casa"
-            ? estado.casa
-            : estado.fora;
-    }
-
-
-    /*
-    ==========================================================
-    PONTOS VISUAIS
-    ==========================================================
-    */
-
-    function mostrarPonto(jogador) {
-
-        const ponto =
-            estado.pontos[jogador];
-
-
-        if (
-            estado.pontos.casa >= 40 &&
-            estado.pontos.fora >= 40
-        ) {
-
-            if (
-                estado.vantagem === jogador
-            ) {
-
-                return "V";
-            }
-
-            return "40";
-        }
-
-
-        return ponto;
-    }
-
-
-    /*
-    ==========================================================
-    ATUALIZAR INTERFACE
-    ==========================================================
-    */
-
-    function atualizarInterface() {
-
-        /*
-        Nomes
-        */
-
-        document
-            .getElementById("nomeTabelaCasa")
-            .textContent =
-            estado.casa;
-
-        document
-            .getElementById("nomeTabelaFora")
-            .textContent =
-            estado.fora;
-
-        document
-            .getElementById("nomeCasaPlacar")
-            .textContent =
-            estado.casa;
-
-        document
-            .getElementById("nomeForaPlacar")
-            .textContent =
-            estado.fora;
-
-
-        /*
-        Pontos
-        */
-
-        document
-            .getElementById("pontosCasa")
-            .textContent =
-            mostrarPonto("casa");
-
-        document
-            .getElementById("pontosFora")
-            .textContent =
-            mostrarPonto("fora");
-
-
-        /*
-        Games
-        */
-
-        document
-            .getElementById("setInfo")
-            .textContent =
-            `${estado.setAtual}º SET • ` +
-            `${estado.games.casa} × ${estado.games.fora} GAMES`;
-
-
-        /*
-        Sets ganhos
-        */
-
-        document
-            .getElementById("setsCasa")
-            .textContent =
-            estado.sets.casa;
-
-        document
-            .getElementById("setsFora")
-            .textContent =
-            estado.sets.fora;
-
-
-        /*
-        Placar dos sets já encerrados
-        */
-
-        for (
-            let i = 1;
-            i <= 3;
-            i++
-        ) {
-
-            const set =
-                estado.placarSets[i - 1];
-
-
-            document
-                .getElementById(`set${i}Casa`)
-                .textContent =
-                set
-                    ? set.casa
-                    : "-";
-
-
-            document
-                .getElementById(`set${i}Fora`)
-                .textContent =
-                set
-                    ? set.fora
-                    : "-";
-        }
-
-
-        /*
-        Status do game
-        */
-
-        const status =
-            document.getElementById(
-                "gameStatus"
-            );
-
-
-        if (
-            !estado.partidaFinalizada
-        ) {
-
-            status.style.background =
-                "#eff6ff";
-
-            status.style.color =
-                "#1e40af";
-
-
-            if (
-                estado.vantagem === "casa"
-            ) {
-
-                status.textContent =
-                    `Vantagem ${estado.casa}`;
-
-            } else if (
-                estado.vantagem === "fora"
-            ) {
-
-                status.textContent =
-                    `Vantagem ${estado.fora}`;
-
-            } else if (
-                estado.pontos.casa === 40 &&
-                estado.pontos.fora === 40
-            ) {
-
-                status.textContent =
-                    "40 × 40 — DEUCE";
-
-            } else {
-
-                status.textContent =
-                    `Saque: ${nomeJogador(estado.sacando)}`;
-            }
-        }
-
-
-        /*
-        Destaque de vantagem
-        */
-
-        document
-            .getElementById("cardCasa")
-            .classList.toggle(
-                "advantage",
-                estado.vantagem === "casa"
-            );
-
-
-        document
-            .getElementById("cardFora")
-            .classList.toggle(
-                "advantage",
-                estado.vantagem === "fora"
-            );
-    }
-
-
-    /*
-    ==========================================================
-    HISTÓRICO
-    ==========================================================
-    */
-
-    function registrarAcao(texto) {
-
-        const agora =
-            new Date().toLocaleTimeString(
+    const hora =
+        new Date()
+            .toLocaleTimeString(
                 "pt-BR",
                 {
                     hour: "2-digit",
@@ -2154,75 +3174,44 @@
             );
 
 
-        const historico =
-            document.getElementById(
-                "historico"
-            );
+    item.textContent =
+        hora +
+        " — " +
+        texto;
 
 
-        if (
-            historico.textContent ===
-            "Nenhum evento ainda."
-        ) {
-
-            historico.innerHTML = "";
-        }
+    historico.prepend(
+        item
+    );
 
 
-        const item =
-            document.createElement("div");
-
-        item.className =
-            "history-item";
-
-        item.textContent =
-            `${agora} — ${texto}`;
-
-
-        historico.prepend(item);
+    document
+        .getElementById(
+            "ultimaAcao"
+        )
+        .textContent =
+        texto;
+}
 
 
-        /*
-        Mostra também na área de ação.
-        */
 
-        document
-            .getElementById("ultimaAcao")
-            .textContent =
-            texto;
-    }
+/* =========================================================
+   ALIAS
+========================================================= */
 
 
-    function adicionarHistorico(texto) {
+function registrarAcao(
+    texto
+) {
 
-        registrarAcao(texto);
-    }
+    adicionarHistorico(
+        texto
+    );
+}
 
-
-    /*
-    ==========================================================
-    NOVA PARTIDA
-    ==========================================================
-    */
-
-    function novaPartida() {
-
-        if (
-            recognition
-        ) {
-
-            try {
-                recognition.stop();
-            } catch (e) {}
-        }
-
-
-        partidaIniciada = false;
-
-        location.reload();
-    }
 
 </script>
 
 </body>
+
 </html>

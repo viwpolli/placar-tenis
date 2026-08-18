@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#080b0f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <title>Placar de Tênis por Voz</title>
+  <style>
+    :root{
+      --bg:#080b0f; --card:#11161c; --line:#29313a; --text:#f4f7fa;
+      --muted:#89939e; --home:#9dff22; --away:#3d8dff; --danger:#ff5c67;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{padding:env(safe-area-inset-top) 14px env(safe-area-inset-bottom);display:flex;justify-content:center}
+    button{font:inherit}
+    .app{width:min(760px,100%);padding:14px 0 28px}
+    .top{
+      background:linear-gradient(145deg,#12181e,#0e1217);border:1px solid #303841;
+      border-radius:20px;padding:16px;margin-bottom:12px;box-shadow:0 8px 30px #0008
+    }
+    .toprow{display:flex;align-items:center;gap:14px}
+    .mic-icon{width:58px;height:58px;border-radius:50%;display:grid;place-items:center;border:2px solid #31521b;background:#172113;font-size:29px}
+    .mic-icon.listening{box-shadow:0 0 0 5px #9dff2215,0 0 25px #9dff2240}
+    .last-label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:var(--home);font-weight:800}
+    #lastCommand{font-size:21px;font-weight:700;margin-top:4px;min-height:29px;word-break:break-word}
+    .status{margin-left:auto;white-space:nowrap;color:var(--muted);font-size:13px;font-weight:700}
+    .dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#555;margin-right:6px}
+    .dot.on{background:var(--home);box-shadow:0 0 12px var(--home)}
+    .dot.err{background:var(--danger)}
+    .score-card{
+      background:linear-gradient(145deg,#12171c,#0e1216);border:1px solid #29313a;
+      border-radius:22px;padding:20px 16px;margin:12px 0;position:relative;overflow:hidden
+    }
+    .score-card.home{border-color:#294018}.score-card.away{border-color:#1e385f}
+    .player{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center}
+    .name{font-size:clamp(22px,6vw,38px);font-weight:900;letter-spacing:.04em}
+    .home .name{color:var(--home)}.away .name{color:var(--away)}
+    .serve{font-size:13px;font-weight:800;color:var(--muted);margin-top:7px;min-height:20px}
+    .serve .ball{display:inline-grid;place-items:center;width:19px;height:19px;border-radius:50%;background:#e8df25;color:#111;font-size:11px;margin-right:6px}
+    .scoreline{display:grid;grid-template-columns:minmax(0,1fr) 1px 78px;align-items:center;gap:16px;margin-top:10px}
+    .points{font-size:clamp(76px,23vw,145px);line-height:.82;font-weight:950;letter-spacing:-.07em;text-align:center}
+    .home .points{color:var(--home)}.away .points{color:var(--away)}
+    .divider{height:92px;background:#4a535c}
+    .games-label{font-size:12px;text-transform:uppercase;letter-spacing:.12em;color:#8c959e;text-align:center;font-weight:800}
+    .games{font-size:clamp(54px,15vw,88px);line-height:1;font-weight:900;text-align:center}
+    .controls{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+    button{
+      min-height:52px;border:1px solid #343e47;border-radius:15px;background:#171d23;color:#f4f7fa;
+      font-weight:800;cursor:pointer;-webkit-tap-highlight-color:transparent
+    }
+    button:active{transform:scale(.98)}
+    .primary{background:#1c2d12;border-color:#416c1c;color:var(--home)}
+    .secondary{color:#aeb7bf}
+    .help{margin-top:12px;border:1px solid #29313a;border-radius:18px;padding:15px;background:#0f1419;color:#b6bec6;font-size:14px;line-height:1.55}
+    .help strong{color:#fff}.help code{color:#dce5ec}
+    .footer{display:flex;justify-content:center;gap:12px;align-items:center;margin-top:14px;color:#727d87;font-size:12px;text-align:center}
+    @media (max-width:430px){
+      .score-card{padding:17px 13px}.scoreline{grid-template-columns:minmax(0,1fr) 1px 67px;gap:9px}
+      .top{padding:13px}.mic-icon{width:50px;height:50px;font-size:25px}.status{font-size:11px}
+    }
+  </style>
+</head>
+<body>
+<main class="app">
+  <section class="top">
+    <div class="toprow">
+      <div id="micIcon" class="mic-icon">🎙️</div>
+      <div style="min-width:0">
+        <div class="last-label">Último comando entendido</div>
+        <div id="lastCommand">Aguardando comando...</div>
+      </div>
+      <div class="status"><span id="statusDot" class="dot"></span><span id="statusText">PARADO</span></div>
+    </div>
+  </section>
+
+  <section class="score-card home">
+    <div class="player">
+      <div>
+        <div class="name">CASA</div>
+        <div id="homeServe" class="serve"></div>
+      </div>
+    </div>
+    <div class="scoreline">
+      <div id="homePoints" class="points">0</div>
+      <div class="divider"></div>
+      <div><div class="games-label">Games</div><div id="homeGames" class="games">0</div></div>
+    </div>
+  </section>
+
+  <section class="score-card away">
+    <div class="player">
+      <div>
+        <div class="name">ADVERSÁRIO</div>
+        <div id="awayServe" class="serve"></div>
+      </div>
+    </div>
+    <div class="scoreline">
+      <div id="awayPoints" class="points">0</div>
+      <div class="divider"></div>
+      <div><div class="games-label">Games</div><div id="awayGames" class="games">0</div></div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button id="startBtn" class="primary">🎙️ Iniciar voz</button>
+    <button id="resetBtn" class="secondary">↺ Novo jogo</button>
+  </div>
+
+  <section class="help">
+    <strong>Comandos:</strong><br>
+    Início: <code>“saque casa”</code>, <code>“eu saco”</code>, <code>“saque adversário”</code>, <code>“ele saca”</code>.<br>
+    Placar: <code>“15 a 30”</code>, <code>“30 a 30”</code>, <code>“40 a 30”</code>,
+    <code>“vantagem casa”</code>, <code>“vantagem adversário”</code>.<br>
+    Game encerrado: depois de um placar válido, diga <code>“zero a zero”</code>.
+  </section>
+
+  <div class="footer">
+    <span>Microfone ativo durante a sessão</span><span>•</span><span>Reconhecimento contínuo</span>
+  </div>
+</main>
+
+<script>
+(() => {
+  "use strict";
+
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  const $ = id => document.getElementById(id);
+
+  let state = {
+    homePoints: "0",
+    awayPoints: "0",
+    homeGames: 0,
+    awayGames: 0,
+    server: null,
+    previousLeader: null,
+    running: false,
+    shouldRestart: false,
+    recognition: null,
+    restarting: false
+  };
+
+  function render() {
+    $("homePoints").textContent = state.homePoints;
+    $("awayPoints").textContent = state.awayPoints;
+    $("homeGames").textContent = state.homeGames;
+    $("awayGames").textContent = state.awayGames;
+
+    $("homeServe").innerHTML = state.server === "home"
+      ? '<span class="ball">●</span>SACANDO' : "";
+    $("awayServe").innerHTML = state.server === "away"
+      ? '<span class="ball">●</span>SACANDO' : "";
+  }
+
+  function setStatus(text, on=false, error=false) {
+    $("statusText").textContent = text;
+    $("statusDot").className = "dot" + (on ? " on" : "") + (error ? " err" : "");
+    $("micIcon").classList.toggle("listening", on);
+  }
+
+  function normalize(s) {
+    return s.toLowerCase()
+      .normalize("NFD").replace(/[\\u0300-\\u036f]/g, "")
+      .replace(/[.,!?;:]/g, " ")
+      .replace(/\\s+/g, " ").trim();
+  }
+
+  function parseNumberWord(s) {
+    const map = {
+      "zero":"0","um":"1","uma":"1","dois":"2","duas":"2","tres":"3","três":"3",
+      "quatro":"4","cinco":"5","seis":"6","sete":"7","oito":"8","nove":"9",
+      "dez":"10","quinze":"15","trinta":"30","quarenta":"40"
+    };
+    return map[s] ?? s;
+  }
+
+  function extractScore(text) {
+    const t = normalize(text)
+      .replace(/\\b(para|por|de|ponto|pontos)\\b/g, " ")
+      .replace(/\\s+/g, " ").trim();
+
+    const adv = t.includes("vantagem");
+    if (adv) {
+      if (t.includes("casa") || t.includes("eu") || t.includes("meu")) return {home:"AD", away:""};
+      if (t.includes("adversario") || t.includes("ele")) return {home:"", away:"AD"};
+    }
+
+    if (t === "zero a zero" || t === "0 a 0" || t === "zero zero" || t === "0 0") {
+      return {home:"0", away:"0", zeroZero:true};
+    }
+
+    // Aceita "15 a 30", "quinze a trinta", "40 para 30", etc.
+    const m = t.match(/(?:placar\\s+)?([a-z0-9]+)\\s+(?:a|para|x|por)\\s+([a-z0-9]+)/);
+    if (!m) return null;
+
+    const h = parseNumberWord(m[1]);
+    const a = parseNumberWord(m[2]);
+    const valid = ["0","15","30","40"];
+    if (valid.includes(h) && valid.includes(a)) return {home:h, away:a};
+    return null;
+  }
+
+  function setScore(home, away) {
+    state.homePoints = home;
+    state.awayPoints = away;
+
+    if (home === "AD") state.previousLeader = "home";
+    else if (away === "AD") state.previousLeader = "away";
+    else if (home !== away) state.previousLeader = Number(home) > Number(away) ? "home" : "away";
+    else state.previousLeader = null;
+
+    render();
+  }
+
+  function finishGame() {
+    if (state.previousLeader === "home") {
+      state.homeGames++;
+      state.server = state.server === "home" ? "away" : "home";
+    } else if (state.previousLeader === "away") {
+      state.awayGames++;
+      state.server = state.server === "home" ? "away" : "home";
+    } else {
+      $("lastCommand").textContent = "“zero a zero” — sem líder claro para fechar o game";
+      return;
+    }
+
+    state.homePoints = "0";
+    state.awayPoints = "0";
+    state.previousLeader = null;
+    render();
+  }
+
+  function processCommand(raw) {
+    const t = normalize(raw);
+    $("lastCommand").textContent = "“" + raw.trim() + "”";
+
+    // Comandos de saque precisam vir antes do parser de placar.
+    if (/(saque|saca|sacando).*(casa|eu|meu)/.test(t) ||
+        /(eu|eu que)\\s+sac(o|a)/.test(t)) {
+      state.server = "home";
+      render();
+      return;
+    }
+
+    if (/(saque|saca|sacando).*(adversario|ele)/.test(t) ||
+        /(ele|adversario)\\s+sac(a|ando)/.test(t)) {
+      state.server = "away";
+      render();
+      return;
+    }
+
+    const parsed = extractScore(raw);
+    if (!parsed) return;
+
+    if (parsed.zeroZero) {
+      finishGame();
+      return;
+    }
+
+    setScore(parsed.home, parsed.away);
+  }
+
+  function setupRecognition() {
+    if (!SpeechRecognition) {
+      setStatus("NÃO SUPORTADO", false, true);
+      $("startBtn").disabled = true;
+      $("lastCommand").textContent = "Seu navegador não disponibiliza Web Speech API.";
+      return;
+    }
+
+    const r = new SpeechRecognition();
+    r.lang = "pt-BR";
+    r.continuous = true;
+    r.interimResults = false;
+    r.maxAlternatives = 3;
+    state.recognition = r;
+
+    r.onstart = () => {
+      state.running = true;
+      state.restarting = false;
+      setStatus("OUVINDO", true);
+      $("startBtn").textContent = "🟢 Voz ativa";
+    };
+
+    r.onresult = event => {
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        if (event.results[i].isFinal) {
+          const result = event.results[i];
+          const text = result[0].transcript;
+          processCommand(text);
+        }
+      }
+    };
+
+    r.onerror = event => {
+      console.log("SpeechRecognition:", event.error);
+      if (["not-allowed","service-not-allowed"].includes(event.error)) {
+        state.shouldRestart = false;
+        state.running = false;
+        setStatus("PERMISSÃO NEGADA", false, true);
+        $("lastCommand").textContent = "Permita o microfone nas configurações do navegador.";
+      } else {
+        setStatus("RECONECTANDO…", false);
+      }
+    };
+
+    r.onend = () => {
+      state.running = false;
+      if (state.shouldRestart) {
+        setStatus("RECONECTANDO…");
+        // Alguns navegadores encerram recognition mesmo com continuous=true.
+        // Reiniciamos após um pequeno intervalo.
+        clearTimeout(state.restartTimer);
+        state.restartTimer = setTimeout(() => {
+          if (!state.shouldRestart) return;
+          try { r.start(); } catch(e) {}
+        }, 350);
+      } else {
+        setStatus("PARADO");
+        $("startBtn").textContent = "🎙️ Iniciar voz";
+      }
+    };
+  }
+
+  function startVoice() {
+    if (!state.recognition) setupRecognition();
+    if (!state.recognition) return;
+
+    state.shouldRestart = true;
+    try {
+      state.recognition.start();
+    } catch (e) {
+      // start() lança erro se já estiver ativo; nesse caso apenas mantemos o estado.
+      setStatus("OUVINDO", true);
+    }
+  }
+
+  function stopVoice() {
+    state.shouldRestart = false;
+    clearTimeout(state.restartTimer);
+    try { state.recognition.stop(); } catch(e) {}
+    state.running = false;
+    setStatus("PARADO");
+    $("startBtn").textContent = "🎙️ Iniciar voz";
+  }
+
+  function resetGame() {
+    state.homePoints = "0";
+    state.awayPoints = "0";
+    state.homeGames = 0;
+    state.awayGames = 0;
+    state.server = null;
+    state.previousLeader = null;
+    $("lastCommand").textContent = "Aguardando comando...";
+    render();
+  }
+
+  $("startBtn").addEventListener("click", () => {
+    if (state.running) stopVoice(); else startVoice();
+  });
+
+  $("resetBtn").addEventListener("click", resetGame);
+
+  // Tenta manter a sessão ativa quando a aba volta ao primeiro plano.
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && state.shouldRestart && !state.running) {
+      setTimeout(startVoice, 250);
+    }
+  });
+
+  // Impede que o celular apague a tela quando o navegador suportar Wake Lock.
+  let wakeLock = null;
+  async function requestWakeLock() {
+    try {
+      if ("wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen");
+    } catch(e) {}
+  }
+  document.addEventListener("visibilitychange", () => {
+    if (!document.hidden && state.shouldRestart) requestWakeLock();
+  });
+  $("startBtn").addEventListener("click", requestWakeLock);
+
+  setupRecognition();
+  render();
+})();
+</script>
+</body>
+</html>

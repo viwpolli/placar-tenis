@@ -7,35 +7,64 @@
 
 <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
 >
 
-<title>Placar de Tênis por Voz</title>
+<title>Placar de Tênis</title>
 
 <style>
 
+/* =========================================================
+   CORES
+========================================================= */
+
 :root {
-    --verde: #10b981;
-    --verde-escuro: #059669;
+
+    --verde: #16a34a;
+    --verde-claro: #22c55e;
+
     --azul: #2563eb;
+
     --vermelho: #dc2626;
-    --fundo: #f3f4f6;
-    --card: #ffffff;
-    --texto: #111827;
-    --cinza: #6b7280;
-    --borda: #e5e7eb;
+
     --amarelo: #f59e0b;
+
+    --fundo: #07111f;
+
+    --fundo-placar: #0b1728;
+
+    --card: #111e30;
+
+    --texto: #ffffff;
+
+    --cinza: #94a3b8;
+
+    --borda: #26364d;
+
+    --branco: #ffffff;
 }
+
+
+/* =========================================================
+   RESET
+========================================================= */
 
 * {
     box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
 }
 
+
+html,
 body {
+
     margin: 0;
-    padding: 15px;
-    background: var(--fundo);
-    color: var(--texto);
+
+    width: 100%;
+    height: 100%;
+
+    overflow: hidden;
+
     font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -43,330 +72,1058 @@ body {
         Roboto,
         Arial,
         sans-serif;
+
+    background: var(--fundo);
+
+    color: var(--texto);
 }
 
-.container {
+
+/* =========================================================
+   CONFIGURAÇÃO
+========================================================= */
+
+.configuracao {
+
     width: 100%;
-    max-width: 720px;
-    margin: auto;
+    height: 100vh;
+
+    overflow-y: auto;
+
+    padding: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
 }
 
-.card {
-    background: var(--card);
-    border-radius: 18px;
-    padding: 22px;
-    margin-bottom: 16px;
+
+.config-card {
+
+    width: 100%;
+    max-width: 700px;
+
+    background: white;
+
+    color: #111827;
+
+    border-radius: 22px;
+
+    padding: 30px;
+
     box-shadow:
-        0 8px 25px rgba(0,0,0,.06);
+        0 20px 60px rgba(0,0,0,.35);
 }
 
-h1 {
+
+.config-card h1 {
+
     text-align: center;
-    margin: 0 0 5px;
-    font-size: 28px;
+
+    font-size: 34px;
+
+    margin: 0 0 8px;
 }
 
-.subtitulo {
+
+.config-subtitulo {
+
     text-align: center;
-    color: var(--cinza);
-    margin-bottom: 22px;
+
+    color: #64748b;
+
+    margin-bottom: 30px;
+
+    font-size: 17px;
 }
 
-.hidden {
-    display: none !important;
-}
-
-/* CONFIGURAÇÃO */
 
 .config-grid {
+
     display: grid;
+
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
+
+    gap: 15px;
 }
+
 
 label {
+
     display: block;
-    margin-bottom: 6px;
+
+    margin-bottom: 7px;
+
     font-size: 13px;
-    font-weight: 700;
-    color: var(--cinza);
+
+    font-weight: 800;
+
+    color: #64748b;
 }
 
+
 input {
+
     width: 100%;
-    padding: 13px;
-    border: 2px solid var(--borda);
-    border-radius: 10px;
-    font-size: 16px;
+
+    padding: 15px;
+
+    border-radius: 12px;
+
+    border: 2px solid #e2e8f0;
+
+    font-size: 18px;
+
     outline: none;
 }
 
+
 input:focus {
+
     border-color: var(--verde);
 }
 
-.saque {
-    margin-top: 18px;
+
+.saque-config {
+
+    margin-top: 22px;
 }
+
 
 .saque-botoes {
+
     display: grid;
+
     grid-template-columns: 1fr 1fr;
-    gap: 10px;
+
+    gap: 12px;
 }
 
+
 button {
+
     border: 0;
-    border-radius: 10px;
-    padding: 14px;
-    font-size: 16px;
-    font-weight: 700;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    font-size: 17px;
+
+    font-weight: 800;
+
     cursor: pointer;
 }
 
+
 .botao-saque {
-    background: #f9fafb;
-    border: 2px solid var(--borda);
+
+    background: #f8fafc;
+
+    border: 2px solid #e2e8f0;
 }
+
 
 .botao-saque.selecionado {
-    background: #ecfdf5;
+
+    background: #dcfce7;
+
     border-color: var(--verde);
-    color: #047857;
+
+    color: #166534;
 }
+
 
 .botao-iniciar {
+
     width: 100%;
-    margin-top: 18px;
+
+    margin-top: 22px;
+
     background: var(--verde);
+
     color: white;
-    font-size: 17px;
+
+    font-size: 20px;
 }
+
 
 .aviso {
-    margin-top: 15px;
-    padding: 13px;
-    border-radius: 10px;
-    background: #fff7ed;
-    color: #9a3412;
-    font-size: 13px;
-    line-height: 1.5;
-}
 
-/* MICROFONE */
+    margin-top: 20px;
 
-.microfone {
     padding: 15px;
+
     border-radius: 12px;
-    text-align: center;
-    font-weight: 800;
-    background: #fee2e2;
-    color: #991b1b;
-    margin-bottom: 16px;
-}
 
-.microfone.ouvindo {
-    background: #dcfce7;
-    color: #166534;
-}
+    background: #f8fafc;
 
-.bolinha {
-    display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: currentColor;
-    margin-right: 7px;
-    animation: pulsar 1.2s infinite;
-}
+    color: #475569;
 
-@keyframes pulsar {
+    line-height: 1.5;
 
-    0% {
-        opacity: .3;
-        transform: scale(.8);
-    }
-
-    50% {
-        opacity: 1;
-        transform: scale(1.15);
-    }
-
-    100% {
-        opacity: .3;
-        transform: scale(.8);
-    }
-}
-
-/* SETS */
-
-.tabela-container {
-    overflow-x: auto;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 430px;
-}
-
-th,
-td {
-    padding: 12px;
-    border-bottom: 1px solid var(--borda);
-    text-align: center;
-}
-
-th {
-    color: var(--cinza);
-    font-size: 13px;
-}
-
-.nome-tabela {
-    text-align: left;
-    font-weight: 800;
-}
-
-.numero-set {
-    font-size: 20px;
-    font-weight: 800;
-}
-
-/* GAME */
-
-.informacao-set {
-    text-align: center;
-    color: var(--cinza);
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-
-.placar {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 10px;
-}
-
-.jogador {
-    text-align: center;
-    padding: 20px 8px;
-    background: #fafafa;
-    border: 2px solid var(--borda);
-    border-radius: 15px;
-}
-
-.jogador.vantagem {
-    background: #ecfdf5;
-    border-color: var(--verde);
-}
-
-.nome-jogador {
-    font-size: 17px;
-    font-weight: 800;
-    margin-bottom: 10px;
-}
-
-.pontos {
-    font-size: 50px;
-    font-weight: 900;
-    line-height: 1;
-}
-
-.x {
-    font-size: 20px;
-    font-weight: 800;
-    color: var(--cinza);
-}
-
-.status {
-    margin-top: 18px;
-    padding: 14px;
-    border-radius: 10px;
-    background: #eff6ff;
-    color: #1e40af;
-    text-align: center;
-    font-weight: 800;
-}
-
-.status.vencedor {
-    background: #dcfce7;
-    color: #166534;
-}
-
-.status.alerta {
-    background: #fff7ed;
-    color: #9a3412;
-}
-
-/* VOZ */
-
-.voz {
-    text-align: center;
-}
-
-.titulo-pequeno {
-    font-size: 12px;
-    color: var(--cinza);
-    font-weight: 800;
-    margin-bottom: 8px;
-}
-
-.comando {
-    font-size: 19px;
-    font-weight: 800;
-    min-height: 28px;
-}
-
-.acao {
-    color: var(--verde-escuro);
-    font-weight: 700;
-    margin-top: 8px;
-    min-height: 22px;
-}
-
-/* HISTÓRICO */
-
-.historico {
-    max-height: 300px;
-    overflow-y: auto;
-}
-
-.evento {
-    padding: 9px 0;
-    border-bottom: 1px solid var(--borda);
     font-size: 14px;
 }
 
-/* BOTÃO EXTRA */
 
-.botoes-controle {
+.hidden {
+
+    display: none !important;
+}
+
+
+/* =========================================================
+   PLACAR PRINCIPAL
+========================================================= */
+
+#partida {
+
+    width: 100%;
+    height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #14243a 0%,
+            #07111f 70%
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    padding: 14px 18px;
+
+    position: relative;
+}
+
+
+/* =========================================================
+   TOPO
+========================================================= */
+
+.topo-placar {
+
+    height: 55px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+
+.titulo-partida {
+
+    font-size: 18px;
+
+    font-weight: 800;
+
+    color: var(--cinza);
+
+    text-transform: uppercase;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   STATUS DE SAQUE
+========================================================= */
+
+.saque-status {
+
+    position: absolute;
+
+    right: 0;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    padding: 8px 14px;
+
+    border-radius: 20px;
+
+    background: #17263b;
+
+    border: 1px solid #334155;
+
+    color: var(--cinza);
+
+    font-size: 13px;
+
+    font-weight: 800;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+
+.bolinha-saque {
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: var(--amarelo);
+
+    box-shadow:
+        0 0 10px var(--amarelo);
+}
+
+
+/* =========================================================
+   INFORMAÇÃO DO SET
+========================================================= */
+
+.info-set {
+
+    text-align: center;
+
+    color: var(--cinza);
+
+    font-size: 16px;
+
+    font-weight: 800;
+
+    height: 30px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   PLACAR
+========================================================= */
+
+.placar-principal {
+
+    flex: 1;
+
+    min-height: 0;
+
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 18px;
+
+    margin-top: 5px;
 }
 
-.botao-desfazer {
-    background: #f9fafb;
-    border: 2px solid var(--borda);
+
+/* =========================================================
+   JOGADOR
+========================================================= */
+
+.jogador {
+
+    min-width: 0;
+
+    background:
+        linear-gradient(
+            145deg,
+            #142237,
+            #0d1929
+        );
+
+    border: 3px solid #253750;
+
+    border-radius: 24px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    overflow: hidden;
+
+    transition:
+        background .25s,
+        border .25s,
+        transform .25s,
+        box-shadow .25s;
 }
 
-@media (max-width: 550px) {
 
-    .config-grid {
-        grid-template-columns: 1fr;
+/* linha superior */
+
+.jogador::before {
+
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 7px;
+
+    background: #334155;
+
+    transition: background .25s;
+}
+
+
+/* jogador sacando */
+
+.jogador.sacando {
+
+    border-color: var(--amarelo);
+
+    box-shadow:
+        0 0 25px rgba(245,158,11,.20);
+}
+
+
+.jogador.sacando::before {
+
+    background: var(--amarelo);
+}
+
+
+/* jogador com vantagem */
+
+.jogador.vantagem {
+
+    border-color: var(--verde-claro);
+
+    background:
+        linear-gradient(
+            145deg,
+            #123a27,
+            #0c261a
+        );
+
+    box-shadow:
+        0 0 35px rgba(34,197,94,.18);
+}
+
+
+.jogador.vantagem::before {
+
+    background: var(--verde-claro);
+}
+
+
+/* jogador ganhou ponto */
+
+.jogador.ponto-recente {
+
+    animation: destaquePonto .55s ease;
+}
+
+
+@keyframes destaquePonto {
+
+    0% {
+        transform: scale(1);
     }
 
-    .card {
-        padding: 17px;
+    40% {
+        transform: scale(1.025);
     }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+/* =========================================================
+   NOME
+========================================================= */
+
+.nome-jogador {
+
+    font-size: clamp(
+        22px,
+        3vw,
+        42px
+    );
+
+    font-weight: 900;
+
+    text-transform: uppercase;
+
+    text-align: center;
+
+    max-width: 90%;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+
+    color: white;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   INDICADOR DE SAQUE
+========================================================= */
+
+.indicador-saque {
+
+    min-height: 24px;
+
+    font-size: 13px;
+
+    font-weight: 900;
+
+    color: var(--amarelo);
+
+    text-transform: uppercase;
+
+    margin-bottom: 3px;
+}
+
+
+/* =========================================================
+   PONTOS GIGANTES
+========================================================= */
+
+.pontos {
+
+    font-size: clamp(
+        110px,
+        20vw,
+        260px
+    );
+
+    font-weight: 950;
+
+    line-height: .85;
+
+    letter-spacing: -8px;
+
+    color: white;
+
+    text-align: center;
+
+    text-shadow:
+        0 8px 25px rgba(0,0,0,.3);
+}
+
+
+/* vantagem */
+
+.jogador.vantagem .pontos {
+
+    color: var(--verde-claro);
+
+}
+
+
+/* =========================================================
+   GAME / SET
+========================================================= */
+
+.resumo-jogador {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 28px;
+
+    margin-top: 22px;
+}
+
+
+.resumo-item {
+
+    text-align: center;
+}
+
+
+.resumo-label {
+
+    font-size: 11px;
+
+    color: var(--cinza);
+
+    text-transform: uppercase;
+
+    font-weight: 800;
+
+    margin-bottom: 2px;
+}
+
+
+.resumo-valor {
+
+    font-size: clamp(
+        24px,
+        3vw,
+        40px
+    );
+
+    font-weight: 900;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   STATUS CENTRAL INFERIOR
+========================================================= */
+
+.status-placar {
+
+    height: 54px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-top: 8px;
+
+    font-size: 19px;
+
+    font-weight: 900;
+
+    color: white;
+
+    text-align: center;
+}
+
+
+.status-placar.deuce {
+
+    color: var(--amarelo);
+}
+
+
+.status-placar.vantagem {
+
+    color: var(--verde-claro);
+}
+
+
+.status-placar.final {
+
+    color: var(--verde-claro);
+
+    font-size: 25px;
+
+    text-transform: uppercase;
+}
+
+
+/* =========================================================
+   CONTROLE INFERIOR DISCRETO
+========================================================= */
+
+.controles {
+
+    position: absolute;
+
+    bottom: 8px;
+
+    left: 10px;
+
+    display: flex;
+
+    gap: 6px;
+}
+
+
+.botao-pequeno {
+
+    background: rgba(15,23,42,.65);
+
+    border: 1px solid #334155;
+
+    color: #94a3b8;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   MICROFONE
+========================================================= */
+
+.microfone-indicador {
+
+    position: absolute;
+
+    bottom: 8px;
+
+    right: 10px;
+
+    font-size: 11px;
+
+    color: #64748b;
+
+    font-weight: 700;
+}
+
+
+.microfone-indicador.ouvindo {
+
+    color: var(--verde-claro);
+}
+
+
+/* =========================================================
+   TELA DE FINAL
+========================================================= */
+
+.overlay-final {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        rgba(3,10,20,.92);
+
+    z-index: 20;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-direction: column;
+
+    text-align: center;
+
+    padding: 30px;
+
+    animation: aparecer .3s ease;
+}
+
+
+@keyframes aparecer {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+.final-titulo {
+
+    font-size: clamp(
+        48px,
+        10vw,
+        120px
+    );
+
+    font-weight: 950;
+
+    color: var(--verde-claro);
+
+    line-height: .95;
+
+    text-transform: uppercase;
+}
+
+
+.final-vencedor {
+
+    font-size: clamp(
+        30px,
+        5vw,
+        60px
+    );
+
+    font-weight: 900;
+
+    margin-top: 20px;
+}
+
+
+.final-placar {
+
+    font-size: clamp(
+        22px,
+        3vw,
+        40px
+    );
+
+    color: var(--cinza);
+
+    margin-top: 15px;
+}
+
+
+.botao-nova-partida {
+
+    margin-top: 35px;
+
+    background: var(--verde);
+
+    color: white;
+
+    padding: 16px 30px;
+
+    border-radius: 12px;
+
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   TABLET HORIZONTAL
+========================================================= */
+
+@media (
+    min-width: 700px
+) and (
+    orientation: landscape
+) {
+
+    #partida {
+
+        padding:
+            10px
+            18px;
+    }
+
+
+    .topo-placar {
+
+        height: 45px;
+    }
+
+
+    .info-set {
+
+        height: 26px;
+
+        font-size: 14px;
+    }
+
+
+    .placar-principal {
+
+        gap: 14px;
+    }
+
+
+    .resumo-jogador {
+
+        margin-top: 15px;
+
+        gap: 35px;
+    }
+
+
+    .status-placar {
+
+        height: 45px;
+
+        margin-top: 3px;
+    }
+}
+
+
+/* =========================================================
+   CELULAR
+========================================================= */
+
+@media (
+    max-width: 699px
+) {
+
+    html,
+    body {
+
+        overflow: auto;
+    }
+
+
+    #partida {
+
+        min-height: 100vh;
+
+        height: auto;
+
+        overflow: visible;
+
+        padding: 8px;
+    }
+
+
+    .topo-placar {
+
+        height: 45px;
+    }
+
+
+    .titulo-partida {
+
+        font-size: 13px;
+    }
+
+
+    .saque-status {
+
+        font-size: 10px;
+
+        padding: 5px 8px;
+    }
+
+
+    .info-set {
+
+        font-size: 12px;
+
+        height: 25px;
+    }
+
+
+    .placar-principal {
+
+        min-height: 65vh;
+
+        gap: 7px;
+    }
+
+
+    .jogador {
+
+        border-radius: 15px;
+
+        border-width: 2px;
+    }
+
+
+    .nome-jogador {
+
+        font-size: 17px;
+    }
+
+
+    .indicador-saque {
+
+        font-size: 9px;
+
+        min-height: 18px;
+    }
+
 
     .pontos {
+
+        font-size: clamp(
+            75px,
+            25vw,
+            130px
+        );
+
+        letter-spacing: -4px;
+    }
+
+
+    .resumo-jogador {
+
+        gap: 14px;
+
+        margin-top: 15px;
+    }
+
+
+    .resumo-label {
+
+        font-size: 8px;
+    }
+
+
+    .resumo-valor {
+
+        font-size: 22px;
+    }
+
+
+    .status-placar {
+
+        font-size: 14px;
+
+        height: 45px;
+    }
+}
+
+
+/* =========================================================
+   MODO TABLET MUITO GRANDE
+========================================================= */
+
+@media (
+    min-width: 1000px
+) and (
+    orientation: landscape
+) {
+
+    .nome-jogador {
+
+        font-size: 38px;
+    }
+
+
+    .pontos {
+
+        font-size: min(
+            25vw,
+            260px
+        );
+    }
+
+
+    .resumo-valor {
+
         font-size: 42px;
     }
 
-    h1 {
-        font-size: 24px;
+
+    .resumo-label {
+
+        font-size: 12px;
+    }
+
+
+    .status-placar {
+
+        font-size: 22px;
     }
 }
 
@@ -378,22 +1135,23 @@ th {
 <body>
 
 
-<div class="container">
-
-
-<!-- =====================================================
+<!-- =========================================================
      CONFIGURAÇÃO
-===================================================== -->
+========================================================= -->
 
 <div
     id="configuracao"
-    class="card"
+    class="configuracao"
 >
+
+<div class="config-card">
 
 <h1>🎾 Placar de Tênis</h1>
 
-<div class="subtitulo">
-Controle a partida usando sua voz
+<div class="config-subtitulo">
+
+Placar eletrônico com controle por voz
+
 </div>
 
 
@@ -408,7 +1166,7 @@ CASA
 <input
     id="nomeCasa"
     value="Casa"
-    placeholder="Ex.: João"
+    placeholder="Nome do jogador"
 />
 
 </div>
@@ -423,7 +1181,7 @@ FORA
 <input
     id="nomeFora"
     value="Fora"
-    placeholder="Ex.: Pedro"
+    placeholder="Nome do jogador"
 />
 
 </div>
@@ -431,11 +1189,12 @@ FORA
 </div>
 
 
-<div class="saque">
+<div class="saque-config">
 
 <label>
 QUEM COMEÇA SACANDO?
 </label>
+
 
 <div class="saque-botoes">
 
@@ -444,15 +1203,16 @@ QUEM COMEÇA SACANDO?
     class="botao-saque selecionado"
     onclick="escolherSaque(1)"
 >
-🏠 Casa
+🏠 CASA
 </button>
+
 
 <button
     id="saqueFora"
     class="botao-saque"
     onclick="escolherSaque(2)"
 >
-✈️ Fora
+✈️ FORA
 </button>
 
 </div>
@@ -464,43 +1224,50 @@ QUEM COMEÇA SACANDO?
     class="botao-iniciar"
     onclick="iniciarPartida()"
 >
-🎙️ INICIAR PARTIDA
+🎙️ INICIAR PLACAR
 </button>
 
 
 <div class="aviso">
 
-O microfone ficará escutando automaticamente.
+<b>Comandos de voz:</b>
 
 <br><br>
 
-Você pode falar de várias formas:
+“15 a 30” • “quinze trinta” • “15 30”
+
+<br>
+
+“ponto casa” • “ponto fora”
+
+<br>
+
+“game casa” • “game fora”
+
+<br>
+
+“vantagem casa” • “vantagem fora”
+
+<br>
+
+“deuce”
 
 <br><br>
 
-<b>“15 a 30”</b><br>
-<b>“15 30”</b><br>
-<b>“quinze trinta”</b><br>
-<b>“15h30”</b><br>
-<b>“15 iguais”</b><br>
-<b>“ponto casa”</b><br>
-<b>“game casa”</b><br>
-<b>“vantagem fora”</b>
-
-<br><br>
-
-Se o sistema não tiver certeza do que você falou,
-ele <b>não altera o placar</b>.
+O sistema só altera o placar quando reconhecer
+um comando válido.
 
 </div>
 
 </div>
 
+</div>
 
 
-<!-- =====================================================
+
+<!-- =========================================================
      PARTIDA
-===================================================== -->
+========================================================= -->
 
 <div
     id="partida"
@@ -508,136 +1275,25 @@ ele <b>não altera o placar</b>.
 >
 
 
+<!-- TOPO -->
+
+<div class="topo-placar">
+
+<div class="titulo-partida">
+🎾 PLACAR
+</div>
+
+
 <div
-    id="statusMicrofone"
-    class="microfone"
+    id="saqueStatus"
+    class="saque-status"
 >
-🔴 Microfone parado
-</div>
 
+<span class="bolinha-saque"></span>
 
-
-<!-- SETS -->
-
-<div class="card">
-
-<div class="tabela-container">
-
-<table>
-
-<thead>
-
-<tr>
-
-<th>
-Jogador
-</th>
-
-<th>
-1º Set
-</th>
-
-<th>
-2º Set
-</th>
-
-<th>
-3º Set
-</th>
-
-<th>
-Sets
-</th>
-
-</tr>
-
-</thead>
-
-
-<tbody>
-
-<tr>
-
-<td
-    id="tabelaCasa"
-    class="nome-tabela"
->
-Casa
-</td>
-
-<td
-    id="set1Casa"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="set2Casa"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="set3Casa"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="setsCasa"
-    class="numero-set"
->
-0
-</td>
-
-</tr>
-
-
-<tr>
-
-<td
-    id="tabelaFora"
-    class="nome-tabela"
->
-Fora
-</td>
-
-<td
-    id="set1Fora"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="set2Fora"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="set3Fora"
-    class="numero-set"
->
--
-</td>
-
-<td
-    id="setsFora"
-    class="numero-set"
->
-0
-</td>
-
-</tr>
-
-</tbody>
-
-</table>
+<span id="textoSaque">
+Saque
+</span>
 
 </div>
 
@@ -645,20 +1301,25 @@ Fora
 
 
 
-<!-- GAME ATUAL -->
-
-<div class="card">
+<!-- SET -->
 
 <div
     id="informacaoSet"
-    class="informacao-set"
+    class="info-set"
 >
 1º SET • 0 × 0 GAMES
 </div>
 
 
-<div class="placar">
 
+<!-- =====================================================
+     PLACAR GIGANTE
+===================================================== -->
+
+<div class="placar-principal">
+
+
+<!-- CASA -->
 
 <div
     id="cardCasa"
@@ -672,6 +1333,14 @@ Fora
 Casa
 </div>
 
+
+<div
+    id="indicadorSaqueCasa"
+    class="indicador-saque"
+>
+</div>
+
+
 <div
     id="pontosCasa"
     class="pontos"
@@ -679,13 +1348,47 @@ Casa
 0
 </div>
 
+
+<div class="resumo-jogador">
+
+<div class="resumo-item">
+
+<div class="resumo-label">
+Games
+</div>
+
+<div
+    id="gamesCasa"
+    class="resumo-valor"
+>
+0
+</div>
+
 </div>
 
 
-<div class="x">
-×
+<div class="resumo-item">
+
+<div class="resumo-label">
+Sets
 </div>
 
+<div
+    id="setsCasa"
+    class="resumo-valor"
+>
+0
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+
+<!-- FORA -->
 
 <div
     id="cardFora"
@@ -699,6 +1402,14 @@ Casa
 Fora
 </div>
 
+
+<div
+    id="indicadorSaqueFora"
+    class="indicador-saque"
+>
+</div>
+
+
 <div
     id="pontosFora"
     class="pontos"
@@ -706,98 +1417,94 @@ Fora
 0
 </div>
 
-</div>
 
+<div class="resumo-jogador">
 
-</div>
+<div class="resumo-item">
 
-
-<div
-    id="statusJogo"
-    class="status"
->
-Partida em andamento
-</div>
-
-</div>
-
-
-
-<!-- RECONHECIMENTO -->
-
-<div class="card voz">
-
-<div class="titulo-pequeno">
-O QUE O CELULAR ENTENDEU
+<div class="resumo-label">
+Games
 </div>
 
 <div
-    id="ultimoComando"
-    class="comando"
+    id="gamesFora"
+    class="resumo-valor"
 >
-Aguardando...
+0
 </div>
 
+</div>
+
+
+<div class="resumo-item">
+
+<div class="resumo-label">
+Sets
+</div>
 
 <div
-    id="ultimaAcao"
-    class="acao"
+    id="setsFora"
+    class="resumo-valor"
 >
-—
+0
 </div>
 
 </div>
 
+</div>
+
+</div>
+
+</div>
 
 
-<!-- CONTROLE -->
 
-<div class="card">
+<!-- STATUS -->
 
-<div class="botoes-controle">
+<div
+    id="statusPlacar"
+    class="status-placar"
+>
+🎙️ Aguardando
+</div>
+
+
+
+<!-- CONTROLES DISCRETOS -->
+
+<div class="controles">
 
 <button
-    class="botao-desfazer"
+    class="botao-pequeno"
     onclick="desfazer()"
 >
-↩ Desfazer último comando
+↩ Desfazer
 </button>
 
 </div>
 
-</div>
-
-
-
-<!-- HISTÓRICO -->
-
-<div class="card">
-
-<h3>
-📋 Histórico
-</h3>
 
 <div
-    id="historico"
-    class="historico"
+    id="microfoneIndicador"
+    class="microfone-indicador ouvindo"
 >
-Nenhum evento ainda.
+● VOZ ATIVA
 </div>
 
-</div>
-
-
-</div>
 
 </div>
 
 
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
 
 <script>
 
 
 /* =========================================================
-   RECONHECIMENTO DE VOZ
+   RECONHECIMENTO
 ========================================================= */
 
 const SpeechRecognition =
@@ -812,7 +1519,6 @@ let ouvindo = false;
 let partidaIniciada = false;
 
 let saqueInicial = 1;
-
 
 
 /* =========================================================
@@ -862,9 +1568,8 @@ let estado = {
 let estadosAnteriores = [];
 
 
-
 /* =========================================================
-   SAQUE
+   ESCOLHER SAQUE
 ========================================================= */
 
 function escolherSaque(jogador) {
@@ -889,9 +1594,8 @@ function escolherSaque(jogador) {
 }
 
 
-
 /* =========================================================
-   INICIAR
+   INICIAR PARTIDA
 ========================================================= */
 
 function iniciarPartida() {
@@ -899,7 +1603,7 @@ function iniciarPartida() {
     if (!SpeechRecognition) {
 
         alert(
-            "O navegador não suporta reconhecimento de voz. " +
+            "Seu navegador não suporta reconhecimento de voz. " +
             "Use Google Chrome."
         );
 
@@ -943,24 +1647,14 @@ function iniciarPartida() {
     atualizarInterface();
 
 
-    adicionarHistorico(
-        "Partida iniciada. " +
-        "Saque: " +
-        nomePorNumero(
-            estado.sacando
-        )
-    );
-
-
     configurarReconhecimento();
 
     iniciarReconhecimento();
 }
 
 
-
 /* =========================================================
-   CONFIGURAR VOZ
+   CONFIGURAR RECONHECIMENTO
 ========================================================= */
 
 function configurarReconhecimento() {
@@ -987,20 +1681,19 @@ function configurarReconhecimento() {
             ouvindo = true;
 
 
-            const elemento =
+            const indicador =
                 document.getElementById(
-                    "statusMicrofone"
+                    "microfoneIndicador"
                 );
 
 
-            elemento.classList.add(
+            indicador.textContent =
+                "● VOZ ATIVA";
+
+
+            indicador.classList.add(
                 "ouvindo"
             );
-
-
-            elemento.innerHTML =
-                '<span class="bolinha"></span>' +
-                ' 🟢 ESCUTANDO';
         };
 
 
@@ -1010,13 +1703,17 @@ function configurarReconhecimento() {
             ouvindo = false;
 
 
-            const elemento =
+            const indicador =
                 document.getElementById(
-                    "statusMicrofone"
+                    "microfoneIndicador"
                 );
 
 
-            elemento.classList.remove(
+            indicador.textContent =
+                "● RECONECTANDO";
+
+
+            indicador.classList.remove(
                 "ouvindo"
             );
 
@@ -1025,10 +1722,6 @@ function configurarReconhecimento() {
                 partidaIniciada &&
                 !estado.partidaFinalizada
             ) {
-
-                elemento.innerHTML =
-                    "🔄 Reconectando microfone...";
-
 
                 setTimeout(
                     iniciarReconhecimento,
@@ -1064,27 +1757,15 @@ function configurarReconhecimento() {
                     evento.results[i];
 
 
-                const texto =
-                    resultado[0]
-                        .transcript
-                        .trim();
-
-
-                document
-                    .getElementById(
-                        "ultimoComando"
-                    )
-                    .textContent =
-                    texto;
-
-
                 if (
                     resultado.isFinal
                 ) {
 
                     textoFinal +=
                         " " +
-                        texto;
+                        resultado[0]
+                            .transcript
+                            .trim();
                 }
             }
 
@@ -1093,9 +1774,7 @@ function configurarReconhecimento() {
                 textoFinal.trim();
 
 
-            if (
-                textoFinal
-            ) {
+            if (textoFinal) {
 
                 processarComando(
                     textoFinal
@@ -1105,9 +1784,8 @@ function configurarReconhecimento() {
 }
 
 
-
 /* =========================================================
-   INICIAR MICROFONE
+   INICIAR RECONHECIMENTO
 ========================================================= */
 
 function iniciarReconhecimento() {
@@ -1127,12 +1805,9 @@ function iniciarReconhecimento() {
 
     } catch (erro) {
 
-        console.log(
-            erro
-        );
+        console.log(erro);
     }
 }
-
 
 
 /* =========================================================
@@ -1160,9 +1835,8 @@ function normalizar(texto) {
 }
 
 
-
 /* =========================================================
-   CONVERTER NÚMEROS POR EXTENSO
+   NÚMEROS POR EXTENSO
 ========================================================= */
 
 function normalizarNumeros(texto) {
@@ -1170,10 +1844,6 @@ function normalizarNumeros(texto) {
     texto =
         normalizar(texto);
 
-
-    /*
-    ERROS COMUNS DO RECONHECIMENTO
-    */
 
     const substituicoes = [
 
@@ -1192,26 +1862,9 @@ function normalizarNumeros(texto) {
 
         [/\bô\b/g, "0"],
 
-        [/\bum\b/g, "1"],
-        [/\buma\b/g, "1"],
+        [/\bdezesseis\b/g, "15"],
 
-        [/\bdois\b/g, "2"],
-        [/\bduas\b/g, "2"],
-
-        [/\btres\b/g, "3"],
-        [/\btrês\b/g, "3"],
-
-        [/\bquatro\b/g, "4"],
-
-        [/\bcinco\b/g, "5"],
-
-        [/\bseis\b/g, "6"],
-
-        [/\bsete\b/g, "7"],
-
-        [/\boito\b/g, "8"],
-
-        [/\bnove\b/g, "9"]
+        [/\bquinze\b/g, "15"]
     ];
 
 
@@ -1229,7 +1882,6 @@ function normalizarNumeros(texto) {
 
     return texto;
 }
-
 
 
 /* =========================================================
@@ -1260,7 +1912,6 @@ function numeroValido(valor) {
 }
 
 
-
 /* =========================================================
    IDENTIFICAR JOGADOR
 ========================================================= */
@@ -1270,10 +1921,6 @@ function identificarJogador(texto) {
     texto =
         normalizar(texto);
 
-
-    /*
-    CASA
-    */
 
     if (
         texto.includes("casa") ||
@@ -1286,10 +1933,6 @@ function identificarJogador(texto) {
     }
 
 
-    /*
-    FORA
-    */
-
     if (
         texto.includes("fora") ||
         texto.includes("adversario") ||
@@ -1301,10 +1944,6 @@ function identificarJogador(texto) {
         return "fora";
     }
 
-
-    /*
-    NOME DA CASA
-    */
 
     const casa =
         normalizar(
@@ -1320,10 +1959,6 @@ function identificarJogador(texto) {
         return "casa";
     }
 
-
-    /*
-    NOME DO FORA
-    */
 
     const fora =
         normalizar(
@@ -1342,7 +1977,6 @@ function identificarJogador(texto) {
 
     return null;
 }
-
 
 
 /* =========================================================
@@ -1368,18 +2002,7 @@ function processarComando(
         );
 
 
-    document
-        .getElementById(
-            "ultimoComando"
-        )
-        .textContent =
-        fraseOriginal;
-
-
-
-    /* =========================================
-       DESFAZER
-    ========================================= */
+    /* DESFAZER */
 
     if (
         texto.includes("desfaz") ||
@@ -1396,10 +2019,7 @@ function processarComando(
     }
 
 
-
-    /* =========================================
-       GAME
-    ========================================= */
+    /* GAME */
 
     if (
         texto.includes("game")
@@ -1411,9 +2031,7 @@ function processarComando(
             );
 
 
-        if (
-            jogador
-        ) {
+        if (jogador) {
 
             ganharGame(
                 jogador
@@ -1423,18 +2041,11 @@ function processarComando(
         }
 
 
-        registrarAcao(
-            "Ouvi 'game', mas não identifiquei quem ganhou."
-        );
-
         return;
     }
 
 
-
-    /* =========================================
-       DEUCE
-    ========================================= */
+    /* DEUCE */
 
     if (
         texto.includes("deuce")
@@ -1446,10 +2057,7 @@ function processarComando(
     }
 
 
-
-    /* =========================================
-       VANTAGEM
-    ========================================= */
+    /* VANTAGEM */
 
     if (
         texto.includes("vantagem")
@@ -1461,9 +2069,7 @@ function processarComando(
             );
 
 
-        if (
-            jogador
-        ) {
+        if (jogador) {
 
             definirVantagem(
                 jogador
@@ -1471,20 +2077,10 @@ function processarComando(
 
             return;
         }
-
-
-        registrarAcao(
-            "Ouvi vantagem, mas não identifiquei o jogador."
-        );
-
-        return;
     }
 
 
-
-    /* =========================================
-       PONTO
-    ========================================= */
+    /* PONTO */
 
     if (
         texto.includes("ponto") ||
@@ -1498,9 +2094,7 @@ function processarComando(
             );
 
 
-        if (
-            jogador
-        ) {
+        if (jogador) {
 
             adicionarPonto(
                 jogador
@@ -1508,35 +2102,10 @@ function processarComando(
 
             return;
         }
-
-
-        registrarAcao(
-            "Ouvi ponto, mas não identifiquei quem pontuou."
-        );
-
-        return;
     }
 
 
-
-    /* =========================================
-       PLACAR
-    ========================================= */
-
-    if (
-        processarPlacarFalado(
-            texto
-        )
-    ) {
-
-        return;
-    }
-
-
-
-    /* =========================================
-       GANHOU / VENCEU
-    ========================================= */
+    /* GANHOU / VENCEU */
 
     if (
         texto.includes("ganhou") ||
@@ -1549,9 +2118,7 @@ function processarComando(
             );
 
 
-        if (
-            jogador
-        ) {
+        if (jogador) {
 
             adicionarPonto(
                 jogador
@@ -1562,12 +2129,12 @@ function processarComando(
     }
 
 
+    /* PLACAR */
 
-    registrarAcao(
-        "Não entendi. Placar não alterado."
+    processarPlacarFalado(
+        texto
     );
 }
-
 
 
 /* =========================================================
@@ -1579,26 +2146,15 @@ function definirDeuce() {
     salvarEstado();
 
 
-    estado.pontos.casa =
-        40;
+    estado.pontos.casa = 40;
 
+    estado.pontos.fora = 40;
 
-    estado.pontos.fora =
-        40;
-
-
-    estado.vantagem =
-        null;
-
-
-    registrarAcao(
-        "40 × 40 — Deuce"
-    );
+    estado.vantagem = null;
 
 
     atualizarInterface();
 }
-
 
 
 /* =========================================================
@@ -1612,31 +2168,19 @@ function definirVantagem(
     salvarEstado();
 
 
-    estado.pontos.casa =
-        40;
+    estado.pontos.casa = 40;
 
+    estado.pontos.fora = 40;
 
-    estado.pontos.fora =
-        40;
-
-
-    estado.vantagem =
-        jogador;
-
-
-    registrarAcao(
-        "Vantagem " +
-        nomeJogador(jogador)
-    );
+    estado.vantagem = jogador;
 
 
     atualizarInterface();
 }
 
 
-
 /* =========================================================
-   PROCESSAR PLACAR
+   PROCESSAR PLACAR FALADO
 ========================================================= */
 
 function processarPlacarFalado(
@@ -1648,12 +2192,6 @@ function processarPlacarFalado(
             textoOriginal
         );
 
-
-    /*
-    =========================================
-    FORMATOS DE HORA
-    =========================================
-    */
 
     texto =
         texto.replace(
@@ -1675,12 +2213,6 @@ function processarPlacarFalado(
             "$1 $2"
         );
 
-
-    /*
-    =========================================
-    PALAVRAS ENTRE OS NÚMEROS
-    =========================================
-    */
 
     texto =
         texto
@@ -1711,24 +2243,12 @@ function processarPlacarFalado(
             .trim();
 
 
-    /*
-    =========================================
-    "15 IGUAIS"
-    =========================================
-    */
-
     texto =
         texto.replace(
             /\b(0|15|30|40)\s+iguais\b/g,
             "$1 $1"
         );
 
-
-    /*
-    =========================================
-    PRIMEIRO: NÚMEROS SEPARADOS
-    =========================================
-    */
 
     const partes =
         texto.split(" ");
@@ -1758,13 +2278,6 @@ function processarPlacarFalado(
     }
 
 
-    /*
-    =========================================
-    SE NÃO DEU CERTO,
-    TENTA NÚMEROS COLADOS
-    =========================================
-    */
-
     if (
         numeros.length !== 2
     ) {
@@ -1775,12 +2288,6 @@ function processarPlacarFalado(
             );
     }
 
-
-    /*
-    =========================================
-    AINDA NÃO ENTENDEU
-    =========================================
-    */
 
     if (
         !numeros ||
@@ -1799,12 +2306,6 @@ function processarPlacarFalado(
         numeros[1];
 
 
-    /*
-    =========================================
-    VALIDA PLACAR
-    =========================================
-    */
-
     if (
         !placarValido(
             casa,
@@ -1812,18 +2313,17 @@ function processarPlacarFalado(
         )
     ) {
 
-        registrarAcao(
-            `Placar ${casa} × ${fora} não é válido.`
-        );
-
         return true;
     }
 
 
     /*
-    =========================================
-    0 × 0
-    =========================================
+    IMPORTANTE:
+
+    0 x 0 NÃO encerra game.
+
+    Agora simplesmente mantém
+    o placar zerado.
     */
 
     if (
@@ -1831,19 +2331,17 @@ function processarPlacarFalado(
         fora === 0
     ) {
 
-        registrarAcao(
-            "0 × 0 reconhecido. Nenhum game contabilizado."
-        );
+        estado.pontos.casa = 0;
+
+        estado.pontos.fora = 0;
+
+        estado.vantagem = null;
+
+        atualizarInterface();
 
         return true;
     }
 
-
-    /*
-    =========================================
-    SALVAR
-    =========================================
-    */
 
     salvarEstado();
 
@@ -1860,29 +2358,11 @@ function processarPlacarFalado(
         null;
 
 
-    if (
-        casa === 40 &&
-        fora === 40
-    ) {
-
-        registrarAcao(
-            "40 × 40 — Deuce"
-        );
-
-    } else {
-
-        registrarAcao(
-            `Placar definido: ${casa} × ${fora}`
-        );
-    }
-
-
     atualizarInterface();
 
 
     return true;
 }
-
 
 
 /* =========================================================
@@ -1902,23 +2382,11 @@ function placarValido(
     ];
 
 
-    if (
-        !valores.includes(casa) ||
-        !valores.includes(fora)
-    ) {
-
-        return false;
-    }
-
-
-    /*
-    0 × 40 é possível.
-    40 × 0 também.
-    */
-
-    return true;
+    return (
+        valores.includes(casa) &&
+        valores.includes(fora)
+    );
 }
-
 
 
 /* =========================================================
@@ -1930,61 +2398,44 @@ function separarPlacarColado(
 ) {
 
     const limpo =
-        texto
-            .replace(
-                /\s/g,
-                ""
-            );
+        texto.replace(
+            /\s/g,
+            ""
+        );
 
-
-    /*
-    =========================================
-    COMBINAÇÕES CONHECIDAS
-    =========================================
-    */
 
     const tabela = {
 
-        "00": [0, 0],
+        "00": [0,0],
 
-        "015": [0, 15],
-        "030": [0, 30],
-        "040": [0, 40],
+        "015": [0,15],
+        "030": [0,30],
+        "040": [0,40],
 
-        "150": [15, 0],
-        "1515": [15, 15],
-        "1530": [15, 30],
-        "1540": [15, 40],
+        "150": [15,0],
+        "1515": [15,15],
+        "1530": [15,30],
+        "1540": [15,40],
 
-        "300": [30, 0],
-        "3015": [30, 15],
-        "3030": [30, 30],
-        "3040": [30, 40],
+        "300": [30,0],
+        "3015": [30,15],
+        "3030": [30,30],
+        "3040": [30,40],
 
-        "400": [40, 0],
-        "4015": [40, 15],
-        "4030": [40, 30],
-        "4040": [40, 40]
+        "400": [40,0],
+        "4015": [40,15],
+        "4030": [40,30],
+        "4040": [40,40]
     };
 
 
     if (
-        tabela[
-            limpo
-        ]
+        tabela[limpo]
     ) {
 
-        return tabela[
-            limpo
-        ];
+        return tabela[limpo];
     }
 
-
-    /*
-    =========================================
-    TENTA TODAS AS DIVISÕES POSSÍVEIS
-    =========================================
-    */
 
     for (
         let corte = 1;
@@ -1992,28 +2443,20 @@ function separarPlacarColado(
         corte++
     ) {
 
-        const parte1 =
-            limpo.substring(
-                0,
-                corte
-            );
-
-
-        const parte2 =
-            limpo.substring(
-                corte
-            );
-
-
         const n1 =
             numeroValido(
-                parte1
+                limpo.substring(
+                    0,
+                    corte
+                )
             );
 
 
         const n2 =
             numeroValido(
-                parte2
+                limpo.substring(
+                    corte
+                )
             );
 
 
@@ -2030,20 +2473,8 @@ function separarPlacarColado(
     }
 
 
-    /*
-    =========================================
-    CASOS COMO:
-
-    "trinta trinta"
-    "quarenta quinze"
-
-    normalmente já foram separados acima.
-    =========================================
-    */
-
     return null;
 }
-
 
 
 /* =========================================================
@@ -2056,12 +2487,6 @@ function adicionarPonto(
 
     salvarEstado();
 
-
-    /*
-    =========================================
-    TIE-BREAK
-    =========================================
-    */
 
     if (
         estado.tieBreak
@@ -2081,21 +2506,12 @@ function adicionarPonto(
             : "casa";
 
 
-    /*
-    =========================================
-    DEUCE
-    =========================================
-    */
+    /* DEUCE */
 
     if (
         estado.pontos.casa === 40 &&
         estado.pontos.fora === 40
     ) {
-
-
-        /*
-        Sem vantagem.
-        */
 
         if (
             estado.vantagem === null
@@ -2104,22 +2520,11 @@ function adicionarPonto(
             estado.vantagem =
                 jogador;
 
-
-            registrarAcao(
-                "Vantagem " +
-                nomeJogador(jogador)
-            );
-
-
             atualizarInterface();
 
             return;
         }
 
-
-        /*
-        Jogador com vantagem ganha.
-        */
 
         if (
             estado.vantagem === jogador
@@ -2133,18 +2538,8 @@ function adicionarPonto(
         }
 
 
-        /*
-        Perde a vantagem.
-        */
-
         estado.vantagem =
             null;
-
-
-        registrarAcao(
-            "Deuce"
-        );
-
 
         atualizarInterface();
 
@@ -2152,32 +2547,25 @@ function adicionarPonto(
     }
 
 
-    /*
-    =========================================
-    PONTUAÇÃO NORMAL
-    =========================================
-    */
+    /* PONTUAÇÃO NORMAL */
 
     if (
         estado.pontos[jogador] === 0
     ) {
 
-        estado.pontos[jogador] =
-            15;
+        estado.pontos[jogador] = 15;
 
     } else if (
         estado.pontos[jogador] === 15
     ) {
 
-        estado.pontos[jogador] =
-            30;
+        estado.pontos[jogador] = 30;
 
     } else if (
         estado.pontos[jogador] === 30
     ) {
 
-        estado.pontos[jogador] =
-            40;
+        estado.pontos[jogador] = 40;
 
     } else if (
         estado.pontos[jogador] === 40
@@ -2196,15 +2584,55 @@ function adicionarPonto(
     }
 
 
-    registrarAcao(
-        "Ponto " +
-        nomeJogador(jogador)
+    atualizarInterface();
+
+
+    destacarPonto(
+        jogador
+    );
+}
+
+
+/* =========================================================
+   DESTAQUE
+========================================================= */
+
+function destacarPonto(
+    jogador
+) {
+
+    const elemento =
+        document.getElementById(
+            jogador === "casa"
+                ? "cardCasa"
+                : "cardFora"
+        );
+
+
+    elemento.classList.remove(
+        "ponto-recente"
     );
 
 
-    atualizarInterface();
-}
+    void elemento.offsetWidth;
 
+
+    elemento.classList.add(
+        "ponto-recente"
+    );
+
+
+    setTimeout(
+        function() {
+
+            elemento.classList.remove(
+                "ponto-recente"
+            );
+
+        },
+        600
+    );
+}
 
 
 /* =========================================================
@@ -2214,16 +2642,6 @@ function adicionarPonto(
 function ganharGame(
     jogador
 ) {
-
-    /*
-    IMPORTANTE:
-
-    Aqui "game casa" significa que você está
-    informando explicitamente que a Casa ganhou
-    o GAME.
-
-    Não tentamos adivinhar.
-    */
 
     if (
         estado.tieBreak
@@ -2243,31 +2661,22 @@ function ganharGame(
     estado.games[jogador]++;
 
 
-    registrarAcao(
-        "🎾 GAME " +
-        nomeJogador(jogador)
+    /*
+    Mostra GAME temporariamente
+    antes de voltar para 0 x 0.
+    */
+
+    mostrarMensagemGame(
+        jogador
     );
 
 
-    /*
-    Novo game.
-    */
+    estado.pontos.casa = 0;
 
-    estado.pontos.casa =
-        0;
+    estado.pontos.fora = 0;
 
+    estado.vantagem = null;
 
-    estado.pontos.fora =
-        0;
-
-
-    estado.vantagem =
-        null;
-
-
-    /*
-    Alterna saque.
-    */
 
     estado.sacando =
         estado.sacando === 1
@@ -2281,6 +2690,45 @@ function ganharGame(
     atualizarInterface();
 }
 
+
+/* =========================================================
+   MENSAGEM DE GAME
+========================================================= */
+
+function mostrarMensagemGame(
+    jogador
+) {
+
+    const status =
+        document.getElementById(
+            "statusPlacar"
+        );
+
+
+    status.textContent =
+        "🎾 GAME " +
+        nomeJogador(jogador);
+
+
+    status.className =
+        "status-placar final";
+
+
+    setTimeout(
+        function() {
+
+            if (
+                !estado.partidaFinalizada
+            ) {
+
+                status.className =
+                    "status-placar";
+            }
+
+        },
+        1300
+    );
+}
 
 
 /* =========================================================
@@ -2297,74 +2745,49 @@ function verificarSet() {
         estado.games.fora;
 
 
-    /*
-    6 × 6 -> tie-break.
-    */
-
     if (
         casa === 6 &&
         fora === 6
     ) {
 
-        estado.tieBreak =
-            true;
+        estado.tieBreak = true;
+
+        estado.tieBreakPontos.casa = 0;
+
+        estado.tieBreakPontos.fora = 0;
 
 
-        estado.tieBreakPontos.casa =
-            0;
-
-
-        estado.tieBreakPontos.fora =
-            0;
-
-
-        registrarAcao(
-            "⚡ 6 × 6 — TIE-BREAK"
-        );
-
+        atualizarInterface();
 
         return;
     }
 
-
-    /*
-    Casa ganha com diferença de 2.
-    */
 
     if (
         casa >= 6 &&
         casa - fora >= 2
     ) {
 
-        ganharSet(
-            "casa"
-        );
+        ganharSet("casa");
 
         return;
     }
 
-
-    /*
-    Fora.
-    */
 
     if (
         fora >= 6 &&
         fora - casa >= 2
     ) {
 
-        ganharSet(
-            "fora"
-        );
+        ganharSet("fora");
 
         return;
     }
 }
 
 
-
 /* =========================================================
-   TIE-BREAK
+   TIE BREAK
 ========================================================= */
 
 function adicionarPontoTieBreak(
@@ -2382,11 +2805,6 @@ function adicionarPontoTieBreak(
 
     const fora =
         estado.tieBreakPontos.fora;
-
-
-    registrarAcao(
-        `Tie-break ${casa} × ${fora}`
-    );
 
 
     if (
@@ -2419,49 +2837,35 @@ function adicionarPontoTieBreak(
 }
 
 
-
 /* =========================================================
-   FINALIZAR TIE-BREAK
+   FINALIZAR TIEBREAK
 ========================================================= */
 
 function finalizarTieBreak(
     jogador
 ) {
 
-    estado.games.casa =
-        6;
+    estado.games.casa = 6;
 
-
-    estado.games.fora =
-        6;
+    estado.games.fora = 6;
 
 
     if (
         jogador === "casa"
     ) {
 
-        estado.games.casa =
-            7;
+        estado.games.casa = 7;
 
     } else {
 
-        estado.games.fora =
-            7;
+        estado.games.fora = 7;
     }
-
-
-    registrarAcao(
-        "🏆 " +
-        nomeJogador(jogador) +
-        " venceu o tie-break"
-    );
 
 
     ganharSet(
         jogador
     );
 }
-
 
 
 /* =========================================================
@@ -2485,19 +2889,6 @@ function ganharSet(
     estado.sets[jogador]++;
 
 
-    registrarAcao(
-        "🏆 " +
-        nomeJogador(jogador) +
-        " ganhou o " +
-        estado.setAtual +
-        "º SET"
-    );
-
-
-    /*
-    Melhor de 3.
-    */
-
     if (
         estado.sets[jogador] >= 2
     ) {
@@ -2510,48 +2901,28 @@ function ganharSet(
     }
 
 
-    /*
-    Novo set.
-    */
-
     estado.setAtual++;
 
 
-    estado.games.casa =
-        0;
+    estado.games.casa = 0;
 
+    estado.games.fora = 0;
 
-    estado.games.fora =
-        0;
+    estado.pontos.casa = 0;
 
+    estado.pontos.fora = 0;
 
-    estado.pontos.casa =
-        0;
+    estado.vantagem = null;
 
+    estado.tieBreak = false;
 
-    estado.pontos.fora =
-        0;
+    estado.tieBreakPontos.casa = 0;
 
-
-    estado.vantagem =
-        null;
-
-
-    estado.tieBreak =
-        false;
-
-
-    estado.tieBreakPontos.casa =
-        0;
-
-
-    estado.tieBreakPontos.fora =
-        0;
+    estado.tieBreakPontos.fora = 0;
 
 
     atualizarInterface();
 }
-
 
 
 /* =========================================================
@@ -2562,38 +2933,54 @@ function finalizarPartida(
     jogador
 ) {
 
-    estado.partidaFinalizada =
-        true;
+    estado.partidaFinalizada = true;
+
+
+    atualizarInterface();
 
 
     const nome =
-        nomeJogador(
-            jogador
+        nomeJogador(jogador);
+
+
+    const overlay =
+        document.createElement(
+            "div"
         );
 
 
-    registrarAcao(
-        "🏆 " +
-        nome +
-        " VENCEU A PARTIDA!"
-    );
+    overlay.className =
+        "overlay-final";
 
 
-    const status =
-        document.getElementById(
-            "statusJogo"
+    overlay.innerHTML = `
+
+        <div class="final-titulo">
+            GAME!
+        </div>
+
+        <div class="final-vencedor">
+            ${nome}
+        </div>
+
+        <div class="final-placar">
+            venceu a partida
+        </div>
+
+        <button
+            class="botao-nova-partida"
+            onclick="location.reload()"
+        >
+            Nova partida
+        </button>
+    `;
+
+
+    document
+        .getElementById("partida")
+        .appendChild(
+            overlay
         );
-
-
-    status.classList.add(
-        "vencedor"
-    );
-
-
-    status.textContent =
-        "🏆 " +
-        nome +
-        " venceu a partida!";
 
 
     if (
@@ -2601,14 +2988,12 @@ function finalizarPartida(
     ) {
 
         try {
+
             reconhecimento.stop();
+
         } catch (e) {}
     }
-
-
-    atualizarInterface();
 }
-
 
 
 /* =========================================================
@@ -2635,7 +3020,6 @@ function salvarEstado() {
 }
 
 
-
 /* =========================================================
    DESFAZER
 ========================================================= */
@@ -2646,10 +3030,6 @@ function desfazer() {
         estadosAnteriores.length === 0
     ) {
 
-        registrarAcao(
-            "Nada para desfazer."
-        );
-
         return;
     }
 
@@ -2658,14 +3038,8 @@ function desfazer() {
         estadosAnteriores.pop();
 
 
-    registrarAcao(
-        "↩ Última alteração desfeita."
-    );
-
-
     atualizarInterface();
 }
-
 
 
 /* =========================================================
@@ -2692,9 +3066,8 @@ function nomePorNumero(
 }
 
 
-
 /* =========================================================
-   PONTOS VISUAIS
+   MOSTRAR PONTOS
 ========================================================= */
 
 function mostrarPontos(
@@ -2712,8 +3085,8 @@ function mostrarPontos(
 
 
     if (
-        estado.pontos.casa >= 40 &&
-        estado.pontos.fora >= 40
+        estado.pontos.casa === 40 &&
+        estado.pontos.fora === 40
     ) {
 
         if (
@@ -2734,7 +3107,6 @@ function mostrarPontos(
 }
 
 
-
 /* =========================================================
    ATUALIZAR INTERFACE
 ========================================================= */
@@ -2746,28 +3118,19 @@ function atualizarInterface() {
     */
 
     document
-        .getElementById("tabelaCasa")
+        .getElementById(
+            "nomePlacarCasa"
+        )
         .textContent =
         estado.casa;
 
 
     document
-        .getElementById("tabelaFora")
+        .getElementById(
+            "nomePlacarFora"
+        )
         .textContent =
         estado.fora;
-
-
-    document
-        .getElementById("nomePlacarCasa")
-        .textContent =
-        estado.casa;
-
-
-    document
-        .getElementById("nomePlacarFora")
-        .textContent =
-        estado.fora;
-
 
 
     /*
@@ -2775,20 +3138,39 @@ function atualizarInterface() {
     */
 
     document
-        .getElementById("pontosCasa")
+        .getElementById(
+            "pontosCasa"
+        )
         .textContent =
-        mostrarPontos(
-            "casa"
-        );
+        mostrarPontos("casa");
 
 
     document
-        .getElementById("pontosFora")
+        .getElementById(
+            "pontosFora"
+        )
         .textContent =
-        mostrarPontos(
-            "fora"
-        );
+        mostrarPontos("fora");
 
+
+    /*
+    GAMES
+    */
+
+    document
+        .getElementById(
+            "gamesCasa"
+        )
+        .textContent =
+        estado.games.casa;
+
+
+    document
+        .getElementById(
+            "gamesFora"
+        )
+        .textContent =
+        estado.games.fora;
 
 
     /*
@@ -2796,58 +3178,19 @@ function atualizarInterface() {
     */
 
     document
-        .getElementById("setsCasa")
+        .getElementById(
+            "setsCasa"
+        )
         .textContent =
         estado.sets.casa;
 
 
     document
-        .getElementById("setsFora")
+        .getElementById(
+            "setsFora"
+        )
         .textContent =
         estado.sets.fora;
-
-
-
-    /*
-    PLACAR DOS SETS
-    */
-
-    for (
-        let i = 1;
-        i <= 3;
-        i++
-    ) {
-
-        const set =
-            estado.placarSets[
-                i - 1
-            ];
-
-
-        document
-            .getElementById(
-                "set" +
-                i +
-                "Casa"
-            )
-            .textContent =
-            set
-                ? set.casa
-                : "-";
-
-
-        document
-            .getElementById(
-                "set" +
-                i +
-                "Fora"
-            )
-            .textContent =
-            set
-                ? set.fora
-                : "-";
-    }
-
 
 
     /*
@@ -2882,13 +3225,73 @@ function atualizarInterface() {
     }
 
 
+    /*
+    SAQUE
+    */
+
+    const casaSacando =
+        estado.sacando === 1;
+
+
+    document
+        .getElementById(
+            "cardCasa"
+        )
+        .classList.toggle(
+            "sacando",
+            casaSacando
+        );
+
+
+    document
+        .getElementById(
+            "cardFora"
+        )
+        .classList.toggle(
+            "sacando",
+            !casaSacando
+        );
+
+
+    document
+        .getElementById(
+            "indicadorSaqueCasa"
+        )
+        .textContent =
+        casaSacando
+            ? "● SACANDO"
+            : "";
+
+
+    document
+        .getElementById(
+            "indicadorSaqueFora"
+        )
+        .textContent =
+        !casaSacando
+            ? "● SACANDO"
+            : "";
+
+
+    document
+        .getElementById(
+            "textoSaque"
+        )
+        .textContent =
+        "Saque: " +
+        nomePorNumero(
+            estado.sacando
+        );
+
 
     /*
     VANTAGEM
     */
 
     document
-        .getElementById("cardCasa")
+        .getElementById(
+            "cardCasa"
+        )
         .classList.toggle(
             "vantagem",
             estado.vantagem === "casa"
@@ -2896,12 +3299,13 @@ function atualizarInterface() {
 
 
     document
-        .getElementById("cardFora")
+        .getElementById(
+            "cardFora"
+        )
         .classList.toggle(
             "vantagem",
             estado.vantagem === "fora"
         );
-
 
 
     /*
@@ -2910,7 +3314,7 @@ function atualizarInterface() {
 
     const status =
         document.getElementById(
-            "statusJogo"
+            "statusPlacar"
         );
 
 
@@ -2922,15 +3326,9 @@ function atualizarInterface() {
     }
 
 
-    status.classList.remove(
-        "vencedor"
-    );
-
-
-    status.classList.remove(
-        "alerta"
-    );
-
+    /*
+    TIEBREAK
+    */
 
     if (
         estado.tieBreak
@@ -2939,33 +3337,57 @@ function atualizarInterface() {
         status.textContent =
             "⚡ TIE-BREAK";
 
+        status.className =
+            "status-placar";
+
+
         return;
     }
 
+
+    /*
+    VANTAGEM CASA
+    */
 
     if (
         estado.vantagem === "casa"
     ) {
 
         status.textContent =
-            "Vantagem " +
+            "⚡ VANTAGEM " +
             estado.casa;
+
+        status.className =
+            "status-placar vantagem";
+
 
         return;
     }
 
+
+    /*
+    VANTAGEM FORA
+    */
 
     if (
         estado.vantagem === "fora"
     ) {
 
         status.textContent =
-            "Vantagem " +
+            "⚡ VANTAGEM " +
             estado.fora;
+
+        status.className =
+            "status-placar vantagem";
+
 
         return;
     }
 
+
+    /*
+    DEUCE
+    */
 
     if (
         estado.pontos.casa === 40 &&
@@ -2975,92 +3397,28 @@ function atualizarInterface() {
         status.textContent =
             "40 × 40 — DEUCE";
 
+        status.className =
+            "status-placar deuce";
+
+
         return;
     }
 
 
+    /*
+    SAQUE
+    */
+
     status.textContent =
-        "🎙️ Saque: " +
+        "● " +
         nomePorNumero(
             estado.sacando
-        );
-}
+        ) +
+        " está sacando";
 
 
-
-/* =========================================================
-   HISTÓRICO
-========================================================= */
-
-function adicionarHistorico(
-    texto
-) {
-
-    const historico =
-        document.getElementById(
-            "historico"
-        );
-
-
-    if (
-        historico.textContent ===
-        "Nenhum evento ainda."
-    ) {
-
-        historico.innerHTML =
-            "";
-    }
-
-
-    const item =
-        document.createElement(
-            "div"
-        );
-
-
-    item.className =
-        "evento";
-
-
-    const hora =
-        new Date()
-            .toLocaleTimeString(
-                "pt-BR",
-                {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit"
-                }
-            );
-
-
-    item.textContent =
-        hora +
-        " — " +
-        texto;
-
-
-    historico.prepend(
-        item
-    );
-
-
-    document
-        .getElementById(
-            "ultimaAcao"
-        )
-        .textContent =
-        texto;
-}
-
-
-function registrarAcao(
-    texto
-) {
-
-    adicionarHistorico(
-        texto
-    );
+    status.className =
+        "status-placar";
 }
 
 
